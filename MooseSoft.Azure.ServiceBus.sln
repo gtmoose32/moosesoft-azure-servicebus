@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29025.244
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C14D30AB-983A-4DAA-A8A0-C5EE6A4C3F60}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{372263FB-0C5C-4054-BF91-33BB81755756}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MooseSoft.Azure.ServiceBus", "src\MooseSoft.Azure.ServiceBus\MooseSoft.Azure.ServiceBus.csproj", "{FA824792-53BC-4256-BE94-D08070C268EB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FA824792-53BC-4256-BE94-D08070C268EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA824792-53BC-4256-BE94-D08070C268EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA824792-53BC-4256-BE94-D08070C268EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA824792-53BC-4256-BE94-D08070C268EB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FA824792-53BC-4256-BE94-D08070C268EB} = {C14D30AB-983A-4DAA-A8A0-C5EE6A4C3F60}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0EC4DEFE-1C76-4C17-8B81-40B23F28D56A}
+	EndGlobalSection
+EndGlobal
