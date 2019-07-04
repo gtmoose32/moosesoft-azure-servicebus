@@ -3,6 +3,15 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
+    <Version>1.0.0-rc1</Version>
+    <Authors>Marty Mathis</Authors>
+    <Company />
+    <Description>Provides classes to facilitate advanced message processing scenarios using Microsoft Azure Service Bus.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/gtmoose32/moosesoft-azure-servicebus</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/gtmoose32/moosesoft-azure-servicebus</RepositoryUrl>
+    <PackageTags>azure service bus esb message receiver queue topic</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
