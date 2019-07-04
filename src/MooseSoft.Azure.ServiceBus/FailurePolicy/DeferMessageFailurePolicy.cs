@@ -30,12 +30,19 @@ namespace MooseSoft.Azure.ServiceBus.FailurePolicy
             var deferredPointer = CreateDeferredPointerMessage(context.Message);
 
             var sender = context.CreateMessageSender();
-
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            try
             {
-                await sender.SendAsync(deferredPointer).ConfigureAwait(false);
-                await context.MessageReceiver.DeferAsync(context.Message.SystemProperties.LockToken).ConfigureAwait(false);
-                scope.Complete();
+                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    await sender.SendAsync(deferredPointer).ConfigureAwait(false);
+                    await context.MessageReceiver.DeferAsync(context.Message.SystemProperties.LockToken)
+                        .ConfigureAwait(false);
+                    scope.Complete();
+                }
+            }
+            finally
+            {
+                await sender.CloseAsync();
             }
         }
 

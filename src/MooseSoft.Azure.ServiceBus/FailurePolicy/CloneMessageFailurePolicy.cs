@@ -6,9 +6,18 @@ using System.Transactions;
 
 namespace MooseSoft.Azure.ServiceBus.FailurePolicy
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class CloneMessageFailurePolicy : FailurePolicyBase
     {
         #region ctor
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="canHandle"></param>
+        /// <param name="maxDeliveryCount"></param>
+        /// <param name="backOffDelayStrategy"></param>
         public CloneMessageFailurePolicy(Func<Exception, bool> canHandle, int maxDeliveryCount, IBackOffDelayStrategy backOffDelayStrategy = null)
             : base(canHandle, maxDeliveryCount, backOffDelayStrategy)
         {
@@ -36,17 +45,22 @@ namespace MooseSoft.Azure.ServiceBus.FailurePolicy
             clone.UserProperties[Constants.RetryCountKey] = deliveryCount;
 
             var sender = context.CreateMessageSender();
-
-            using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            try
             {
-                await sender.SendAsync(clone).ConfigureAwait(false);
-                await context.MessageReceiver.CompleteAsync(context.Message.SystemProperties.LockToken)
-                    .ConfigureAwait(false);
+                using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    await sender.SendAsync(clone).ConfigureAwait(false);
+                    await context.MessageReceiver.CompleteAsync(context.Message.SystemProperties.LockToken)
+                        .ConfigureAwait(false);
 
-                scope.Complete();
+                    scope.Complete();
+                }
+
             }
-
-            await sender.CloseAsync();
+            finally
+            {
+                await sender.CloseAsync();
+            }
         }
     }
 }

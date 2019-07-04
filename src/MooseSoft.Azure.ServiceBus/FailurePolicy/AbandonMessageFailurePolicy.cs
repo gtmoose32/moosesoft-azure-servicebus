@@ -9,11 +9,19 @@ namespace MooseSoft.Azure.ServiceBus.FailurePolicy
     /// </summary>
     public class AbandonMessageFailurePolicy : FailurePolicyBase
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public AbandonMessageFailurePolicy() : base(ex => false)
         {
         }
 
-        //Do nothing since this will never be called
+        /// <summary>
+        /// This method will do nothing as it should never be called with this failure policy
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public override Task HandleFailureAsync(MessageContext context, CancellationToken cancellationToken)
             => Task.CompletedTask;
     }
