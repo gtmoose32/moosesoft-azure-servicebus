@@ -13,17 +13,21 @@ namespace MooseSoft.Azure.ServiceBus
         /// 
         /// </summary>
         public Message Message { get; set; }
+
         /// <summary>
         /// 
         /// </summary>
         public IMessageReceiver MessageReceiver { get; }
+
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
-        public IMessageSender CreateMessageSender() => new MessageSender(MessageReceiver.ServiceBusConnection, MessageReceiver.Path);
+        public virtual IMessageSender CreateMessageSender() 
+            => new MessageSender(MessageReceiver.ServiceBusConnection, MessageReceiver.Path);
+
         /// <summary>
-        /// /
+        /// 
         /// </summary>
         /// <param name="message"></param>
         /// <param name="messageReceiver"></param>

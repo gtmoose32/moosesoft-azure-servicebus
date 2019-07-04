@@ -18,7 +18,10 @@ namespace MooseSoft.Azure.ServiceBus.FailurePolicy
         /// <param name="canHandle"></param>
         /// <param name="maxDeliveryCount"></param>
         /// <param name="backOffDelayStrategy"></param>
-        public CloneMessageFailurePolicy(Func<Exception, bool> canHandle, int maxDeliveryCount, IBackOffDelayStrategy backOffDelayStrategy = null)
+        public CloneMessageFailurePolicy(
+            Func<Exception, bool> canHandle, 
+            int maxDeliveryCount = 10, 
+            IBackOffDelayStrategy backOffDelayStrategy = null)
             : base(canHandle, maxDeliveryCount, backOffDelayStrategy)
         {
         } 

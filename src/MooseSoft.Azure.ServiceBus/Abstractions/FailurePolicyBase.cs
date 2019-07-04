@@ -30,7 +30,7 @@ namespace MooseSoft.Azure.ServiceBus.Abstractions
         {
             _canHandle = canHandle;
             MaxDeliveryCount = maxDeliveryCount;
-            BackOffDelayStrategy = backOffDelayStrategy ?? ExponentialBackOffDelayStrategy.Default;
+            BackOffDelayStrategy = backOffDelayStrategy ?? new ZeroBackOffDelayStrategy();
 
         }
 
