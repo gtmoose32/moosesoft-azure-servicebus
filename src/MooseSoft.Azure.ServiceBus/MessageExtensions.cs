@@ -2,23 +2,20 @@
 
 namespace MooseSoft.Azure.ServiceBus
 {
-    public static class MessageExtensions
+    internal static class MessageExtensions
     {
-        public const string DeferredKey = "DeferredSequenceNumber";
-        public const string RetryCountKey = "RetryCount";
-
         private static bool HasDeferredKey(this Message message)
-            => message.UserProperties.ContainsKey(DeferredKey) &&
-               message.UserProperties[DeferredKey] != null;
+            => message.UserProperties.ContainsKey(Constants.DeferredKey) &&
+               message.UserProperties[Constants.DeferredKey] != null;
 
-        public static long? GetDeferredSequenceNumber(this Message message)
+        internal static long? GetDeferredSequenceNumber(this Message message)
             => message.HasDeferredKey()
-                ? (long) message.UserProperties[DeferredKey]
+                ? (long) message.UserProperties[Constants.DeferredKey]
                 : null as long?;
 
-        public static int GetRetryCount(this Message message) => 
-            message.UserProperties.ContainsKey(RetryCountKey) && message.UserProperties[RetryCountKey] != null
-                ? (int) message.UserProperties[RetryCountKey]
+        internal static int GetRetryCount(this Message message) => 
+            message.UserProperties.ContainsKey(Constants.RetryCountKey) && message.UserProperties[Constants.RetryCountKey] != null
+                ? (int) message.UserProperties[Constants.RetryCountKey]
                 : 0;
     }
 }

@@ -11,11 +11,8 @@ namespace MooseSoft.Azure.ServiceBus.FailurePolicy
     public class DeferMessageFailurePolicy : FailurePolicyBase
     {
         #region ctor
-        public DeferMessageFailurePolicy(Func<Exception, bool> canHandle) : base(canHandle)
-        {
-        }
-
-        public DeferMessageFailurePolicy(Func<Exception, bool> canHandle, FailurePolicySettings settings) : base(canHandle, settings)
+        public DeferMessageFailurePolicy(Func<Exception, bool> canHandle, int maxDeliveryCount, IBackOffDelayStrategy backOffDelayStrategy = null) 
+            : base(canHandle, maxDeliveryCount, backOffDelayStrategy)
         {
         } 
         #endregion
@@ -24,7 +21,7 @@ namespace MooseSoft.Azure.ServiceBus.FailurePolicy
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            if (context.Message.SystemProperties.DeliveryCount >= Settings.MaxDeliveryCount)
+            if (context.Message.SystemProperties.DeliveryCount >= MaxDeliveryCount)
             {
                 await context.MessageReceiver.AbandonAsync(context.Message.SystemProperties.LockToken).ConfigureAwait(false);
                 return;
@@ -49,7 +46,7 @@ namespace MooseSoft.Azure.ServiceBus.FailurePolicy
                 Body = Encoding.UTF8.GetBytes(message.SystemProperties.SequenceNumber.ToString()),
                 MessageId = Guid.NewGuid().ToString(),
                 PartitionKey = message.PartitionKey,
-                ScheduledEnqueueTimeUtc = DateTime.UtcNow + CalculateBackOffDelay(message.SystemProperties.DeliveryCount)
+                ScheduledEnqueueTimeUtc = DateTime.UtcNow + BackOffDelayStrategy.Calculate(message.SystemProperties.DeliveryCount)
             };
             deferredPointer.UserProperties.Add(Constants.DeferredKey, message.SystemProperties.SequenceNumber);
 

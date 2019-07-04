@@ -1,8 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("MooseSoft.Azure.ServiceBus.Tests")]
-
-namespace MooseSoft.Azure.ServiceBus
+﻿namespace MooseSoft.Azure.ServiceBus
 {
     internal class Constants
     {

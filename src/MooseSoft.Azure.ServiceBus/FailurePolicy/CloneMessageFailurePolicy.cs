@@ -9,13 +9,8 @@ namespace MooseSoft.Azure.ServiceBus.FailurePolicy
     public class CloneMessageFailurePolicy : FailurePolicyBase
     {
         #region ctor
-        public CloneMessageFailurePolicy(Func<Exception, bool> canHandle)
-            : base(canHandle)
-        {
-        }
-
-        public CloneMessageFailurePolicy(Func<Exception, bool> canHandle, FailurePolicySettings settings)
-            : base(canHandle, settings)
+        public CloneMessageFailurePolicy(Func<Exception, bool> canHandle, int maxDeliveryCount, IBackOffDelayStrategy backOffDelayStrategy = null)
+            : base(canHandle, maxDeliveryCount, backOffDelayStrategy)
         {
         } 
         #endregion
@@ -25,11 +20,11 @@ namespace MooseSoft.Azure.ServiceBus.FailurePolicy
             cancellationToken.ThrowIfCancellationRequested();
 
             var deliveryCount = context.Message.GetRetryCount() + context.Message.SystemProperties.DeliveryCount;
-            if (deliveryCount >= Settings.MaxDeliveryCount)
+            if (deliveryCount >= MaxDeliveryCount)
             {
                 await context.MessageReceiver.DeadLetterAsync(
                         context.Message.SystemProperties.LockToken,
-                        $"Max delivery count of {Settings.MaxDeliveryCount} has been reached.")
+                        $"Max delivery count of {MaxDeliveryCount} has been reached.")
                     .ConfigureAwait(false);
 
                 return;
@@ -37,7 +32,7 @@ namespace MooseSoft.Azure.ServiceBus.FailurePolicy
 
             var clone = context.Message.Clone();
             clone.MessageId = Guid.NewGuid().ToString();
-            clone.ScheduledEnqueueTimeUtc = DateTime.UtcNow + CalculateBackOffDelay(deliveryCount);
+            clone.ScheduledEnqueueTimeUtc = DateTime.UtcNow + BackOffDelayStrategy.Calculate(deliveryCount);
             clone.UserProperties[Constants.RetryCountKey] = deliveryCount;
 
             var sender = context.CreateMessageSender();
