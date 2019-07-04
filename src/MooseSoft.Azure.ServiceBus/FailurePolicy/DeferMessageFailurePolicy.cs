@@ -1,7 +1,5 @@
-﻿using Microsoft.Azure.ServiceBus;
-using MooseSoft.Azure.ServiceBus.Abstractions;
+﻿using MooseSoft.Azure.ServiceBus.Abstractions;
 using System;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -10,12 +8,10 @@ namespace MooseSoft.Azure.ServiceBus.FailurePolicy
 {
     public class DeferMessageFailurePolicy : FailurePolicyBase
     {
-        #region ctor
         public DeferMessageFailurePolicy(Func<Exception, bool> canHandle, int maxDeliveryCount, IBackOffDelayStrategy backOffDelayStrategy = null) 
             : base(canHandle, maxDeliveryCount, backOffDelayStrategy)
         {
         } 
-        #endregion
 
         public override async Task HandleFailureAsync(MessageContext context, CancellationToken cancellationToken)
         {
@@ -27,7 +23,8 @@ namespace MooseSoft.Azure.ServiceBus.FailurePolicy
                 return;
             }
 
-            var deferredPointer = CreateDeferredPointerMessage(context.Message);
+            var deferredPointer = context.Message.CreateDeferredLocatorMessage(
+                BackOffDelayStrategy.Calculate(context.Message.SystemProperties.DeliveryCount));
 
             var sender = context.CreateMessageSender();
             try
@@ -44,20 +41,6 @@ namespace MooseSoft.Azure.ServiceBus.FailurePolicy
             {
                 await sender.CloseAsync();
             }
-        }
-
-        private Message CreateDeferredPointerMessage(Message message)
-        {
-            var deferredPointer = new Message
-            {
-                Body = Encoding.UTF8.GetBytes(message.SystemProperties.SequenceNumber.ToString()),
-                MessageId = Guid.NewGuid().ToString(),
-                PartitionKey = message.PartitionKey,
-                ScheduledEnqueueTimeUtc = DateTime.UtcNow + BackOffDelayStrategy.Calculate(message.SystemProperties.DeliveryCount)
-            };
-            deferredPointer.UserProperties.Add(Constants.DeferredKey, message.SystemProperties.SequenceNumber);
-
-            return deferredPointer;
         }
     }
 }
