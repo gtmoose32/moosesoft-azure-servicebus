@@ -7,11 +7,17 @@ using System.Transactions;
 
 namespace MooseSoft.Azure.ServiceBus
 {
+    /// <inheritdoc cref="IMessageContextProcessor"/>
     public class MessageContextProcessor : IMessageContextProcessor
     {
         private readonly IMessageProcessor _messageProcessor;
         private readonly IFailurePolicy _failurePolicy;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="messageProcessor"></param>
+        /// <param name="failurePolicy"></param>
         public MessageContextProcessor(IMessageProcessor messageProcessor, IFailurePolicy failurePolicy = null)
         {
             _messageProcessor = messageProcessor ?? throw new ArgumentNullException(nameof(messageProcessor));

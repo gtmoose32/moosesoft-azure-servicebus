@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 
 namespace MooseSoft.Azure.ServiceBus.FailurePolicy
 {
+    /// <summary>
+    /// This failure policy will abandon the message for any exceptions that occur.
+    /// </summary>
     public class AbandonMessageFailurePolicy : FailurePolicyBase
     {
         public AbandonMessageFailurePolicy() : base(ex => false)

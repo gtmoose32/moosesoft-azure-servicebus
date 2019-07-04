@@ -4,8 +4,17 @@ using System.Threading.Tasks;
 
 namespace MooseSoft.Azure.ServiceBus.Abstractions
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IMessageProcessor
     {
-        Task ProcessMessageAsync(Message message, CancellationToken cancellationToken = default);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="message"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        Task ProcessMessageAsync(Message message, CancellationToken cancellationToken);
     }
 }

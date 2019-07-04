@@ -5,18 +5,33 @@ using System.Threading.Tasks;
 
 namespace MooseSoft.Azure.ServiceBus.Abstractions
 {
+    /// <inheritdoc cref="IFailurePolicy"/>>
     public abstract class FailurePolicyBase : IFailurePolicy
     {
+        /// <summary>
+        /// 
+        /// </summary>
         protected int MaxDeliveryCount { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
         protected IBackOffDelayStrategy BackOffDelayStrategy { get; }
 
         private readonly Func<Exception, bool> _canHandle;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="canHandle"></param>
+        /// <param name="maxDeliveryCount"></param>
+        /// <param name="backOffDelayStrategy"></param>
         protected FailurePolicyBase(Func<Exception, bool> canHandle, int maxDeliveryCount = 10, IBackOffDelayStrategy backOffDelayStrategy = null)
         {
+            _canHandle = canHandle;
             MaxDeliveryCount = maxDeliveryCount;
             BackOffDelayStrategy = backOffDelayStrategy ?? ExponentialBackOffDelayStrategy.Default;
-            _canHandle = canHandle;
+
         }
 
         public bool CanHandle(Exception exception) => _canHandle(exception);
