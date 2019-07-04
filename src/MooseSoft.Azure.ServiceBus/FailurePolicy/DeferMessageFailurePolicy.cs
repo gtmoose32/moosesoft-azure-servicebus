@@ -8,7 +8,10 @@ namespace MooseSoft.Azure.ServiceBus.FailurePolicy
 {
     public class DeferMessageFailurePolicy : FailurePolicyBase
     {
-        public DeferMessageFailurePolicy(Func<Exception, bool> canHandle, int maxDeliveryCount, IBackOffDelayStrategy backOffDelayStrategy = null) 
+        public DeferMessageFailurePolicy(
+            Func<Exception, bool> canHandle, 
+            int maxDeliveryCount = 10, 
+            IBackOffDelayStrategy backOffDelayStrategy = null) 
             : base(canHandle, maxDeliveryCount, backOffDelayStrategy)
         {
         } 
