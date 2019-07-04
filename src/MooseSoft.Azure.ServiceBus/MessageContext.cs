@@ -1,6 +1,7 @@
 ﻿using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MooseSoft.Azure.ServiceBus
 {
@@ -23,6 +24,7 @@ namespace MooseSoft.Azure.ServiceBus
         /// 
         /// </summary>
         /// <returns></returns>
+        [ExcludeFromCodeCoverage]
         public virtual IMessageSender CreateMessageSender() 
             => new MessageSender(MessageReceiver.ServiceBusConnection, MessageReceiver.Path);
 
