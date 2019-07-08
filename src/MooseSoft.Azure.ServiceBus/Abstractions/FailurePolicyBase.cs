@@ -10,23 +10,17 @@ namespace MooseSoft.Azure.ServiceBus.Abstractions
     public abstract class FailurePolicyBase : IFailurePolicy
     {
         /// <summary>
-        /// 
+        /// Maximum delivery count allowed
         /// </summary>
         protected int MaxDeliveryCount { get; }
 
         /// <summary>
-        /// 
+        /// Back off delay calculator strategy
         /// </summary>
         protected IBackOffDelayStrategy BackOffDelayStrategy { get; }
 
         private readonly Func<Exception, bool> _canHandle;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="canHandle"></param>
-        /// <param name="maxDeliveryCount"></param>
-        /// <param name="backOffDelayStrategy"></param>
         protected FailurePolicyBase(Func<Exception, bool> canHandle, int maxDeliveryCount = 10, IBackOffDelayStrategy backOffDelayStrategy = null)
         {
             _canHandle = canHandle;
@@ -39,6 +33,11 @@ namespace MooseSoft.Azure.ServiceBus.Abstractions
 
         public abstract Task HandleFailureAsync(MessageContext context, CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Gets the delivery count for the specified Service Bus <see cref="Message"/>.
+        /// </summary>
+        /// <param name="message">Message used to determine the delivery count.</param>
+        /// <returns>Number of times the message has been delivered.</returns>
         protected virtual int GetDeliveryCount(Message message) => message.GetDeliveryCount();
     }
 }

@@ -4,7 +4,7 @@ using System;
 namespace MooseSoft.Azure.ServiceBus.BackOffDelayStrategy
 {
     /// <summary>
-    /// 
+    /// This strategy provides a constant delay for every Calculate call regardless of attempt count.
     /// </summary>
     public class ConstantBackOffDelayStrategy : IBackOffDelayStrategy
     {
@@ -12,19 +12,16 @@ namespace MooseSoft.Azure.ServiceBus.BackOffDelayStrategy
 
         private readonly TimeSpan _backOffDelay;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="backOffDelayMinutes"></param>
         public ConstantBackOffDelayStrategy(int backOffDelayMinutes)
         {
             _backOffDelay = TimeSpan.FromMinutes(backOffDelayMinutes >= 0 ? backOffDelayMinutes : DefaultBackOffDelayMinutes);    
         }
 
+        /// <inheritdoc cref="IBackOffDelayStrategy"/>
         public TimeSpan Calculate(int attempts) => _backOffDelay;
 
         /// <summary>
-        /// 
+        /// Creates an instance of this back off delay strategy with default settings.
         /// </summary>
         public static IBackOffDelayStrategy Default => new ConstantBackOffDelayStrategy(DefaultBackOffDelayMinutes);
     }

@@ -7,7 +7,7 @@ using System.Transactions;
 namespace MooseSoft.Azure.ServiceBus.FailurePolicy
 {
     /// <summary>
-    /// This failure policy will create defer the original Service Bus Message attempting to be processed.
+    /// This failure policy will defer the original Service Bus Message attempting to be processed.
     /// A new message will be created that is a pointer to the deferred message and sent to Service Bus in an atomic transaction.
     /// New messages sent to Service Bus will be delayed based upon the <see cref="IBackOffDelayStrategy"/> chosen.
     /// </summary>
