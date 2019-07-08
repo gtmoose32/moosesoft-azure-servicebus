@@ -1,17 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <Version>1.0.0-rc1</Version>
+    <Version>1.0.0-rc2</Version>
     <Authors>Marty Mathis</Authors>
     <Company />
-    <Description>Provides classes to facilitate advanced message processing scenarios using Microsoft Azure Service Bus.</Description>
+    <Description>Provides classes to facilitate advanced message processing scenarios using Microsoft Azure Service Bus, including retry with back delay handling.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/gtmoose32/moosesoft-azure-servicebus</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/gtmoose32/moosesoft-azure-servicebus</RepositoryUrl>
-    <PackageTags>azure service bus esb message receiver queue topic</PackageTags>
+    <PackageTags>azure service bus retry delay backoff message receiver queue topic</PackageTags>
+    <NeutralLanguage>en-US</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>

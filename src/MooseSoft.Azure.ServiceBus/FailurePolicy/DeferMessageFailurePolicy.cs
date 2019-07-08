@@ -6,6 +6,11 @@ using System.Transactions;
 
 namespace MooseSoft.Azure.ServiceBus.FailurePolicy
 {
+    /// <summary>
+    /// This failure policy will create defer the original Service Bus Message attempting to be processed.
+    /// A new message will be created that is a pointer to the deferred message and sent to Service Bus in an atomic transaction.
+    /// New messages sent to Service Bus will be delayed based upon the <see cref="IBackOffDelayStrategy"/> chosen.
+    /// </summary>
     public class DeferMessageFailurePolicy : FailurePolicyBase
     {
         public DeferMessageFailurePolicy(
@@ -20,14 +25,15 @@ namespace MooseSoft.Azure.ServiceBus.FailurePolicy
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            if (context.Message.SystemProperties.DeliveryCount >= MaxDeliveryCount)
+            var deliveryCount = GetDeliveryCount(context.Message);
+            if (deliveryCount >= MaxDeliveryCount)
             {
                 await context.MessageReceiver.AbandonAsync(context.Message.SystemProperties.LockToken).ConfigureAwait(false);
                 return;
             }
 
             var deferredPointer = context.Message.CreateDeferredLocatorMessage(
-                BackOffDelayStrategy.Calculate(context.Message.SystemProperties.DeliveryCount));
+                BackOffDelayStrategy.Calculate(deliveryCount));
 
             var sender = context.CreateMessageSender();
             try

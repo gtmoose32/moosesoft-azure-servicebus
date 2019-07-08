@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 namespace MooseSoft.Azure.ServiceBus.FailurePolicy
 {
     /// <summary>
-    /// This failure policy will abandon the message for any exceptions that occur.
+    /// This failure policy will abandon the message for any exceptions that occur without any back off delay.
     /// </summary>
     public class AbandonMessageFailurePolicy : FailurePolicyBase
     {
         /// <summary>
-        /// 
+        /// Creates a new instance.
         /// </summary>
         public AbandonMessageFailurePolicy() : base(ex => false)
         {

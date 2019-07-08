@@ -1,4 +1,5 @@
-﻿using MooseSoft.Azure.ServiceBus.BackOffDelayStrategy;
+﻿using Microsoft.Azure.ServiceBus;
+using MooseSoft.Azure.ServiceBus.BackOffDelayStrategy;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace MooseSoft.Azure.ServiceBus.Abstractions
         protected FailurePolicyBase(Func<Exception, bool> canHandle, int maxDeliveryCount = 10, IBackOffDelayStrategy backOffDelayStrategy = null)
         {
             _canHandle = canHandle;
-            MaxDeliveryCount = maxDeliveryCount;
+            MaxDeliveryCount = maxDeliveryCount >= 0 ? maxDeliveryCount : 10;
             BackOffDelayStrategy = backOffDelayStrategy ?? new ZeroBackOffDelayStrategy();
 
         }
@@ -37,5 +38,7 @@ namespace MooseSoft.Azure.ServiceBus.Abstractions
         public bool CanHandle(Exception exception) => _canHandle(exception);
 
         public abstract Task HandleFailureAsync(MessageContext context, CancellationToken cancellationToken);
+
+        protected virtual int GetDeliveryCount(Message message) => message.GetDeliveryCount();
     }
 }

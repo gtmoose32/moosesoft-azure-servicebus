@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace MooseSoft.Azure.ServiceBus.Abstractions
 {
     /// <summary>
-    /// 
+    /// Defines a 
     /// </summary>
     public interface IMessageContextProcessor
     {

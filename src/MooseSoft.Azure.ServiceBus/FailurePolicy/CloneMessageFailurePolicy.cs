@@ -1,4 +1,5 @@
-﻿using MooseSoft.Azure.ServiceBus.Abstractions;
+﻿using Microsoft.Azure.ServiceBus;
+using MooseSoft.Azure.ServiceBus.Abstractions;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,17 +8,12 @@ using System.Transactions;
 namespace MooseSoft.Azure.ServiceBus.FailurePolicy
 {
     /// <summary>
-    /// 
+    /// This failure policy will create a clone of the Service Bus Message attempting to be processed.
+    /// The clone will then be sent back to Service Bus while the original message is completed in an atomic transaction with the send.
+    /// New messages sent to Service Bus will be delayed based upon the <see cref="IBackOffDelayStrategy"/> chosen.
     /// </summary>
     public class CloneMessageFailurePolicy : FailurePolicyBase
     {
-        #region ctor
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="canHandle"></param>
-        /// <param name="maxDeliveryCount"></param>
-        /// <param name="backOffDelayStrategy"></param>
         public CloneMessageFailurePolicy(
             Func<Exception, bool> canHandle, 
             int maxDeliveryCount = 10, 
@@ -25,13 +21,12 @@ namespace MooseSoft.Azure.ServiceBus.FailurePolicy
             : base(canHandle, maxDeliveryCount, backOffDelayStrategy)
         {
         } 
-        #endregion
 
         public override async Task HandleFailureAsync(MessageContext context, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var deliveryCount = context.Message.GetRetryCount() + context.Message.SystemProperties.DeliveryCount;
+            var deliveryCount = GetDeliveryCount(context.Message);
             if (deliveryCount >= MaxDeliveryCount)
             {
                 await context.MessageReceiver.DeadLetterAsync(
@@ -64,6 +59,11 @@ namespace MooseSoft.Azure.ServiceBus.FailurePolicy
             {
                 await sender.CloseAsync();
             }
+        }
+
+        protected override int GetDeliveryCount(Message message)
+        {
+            return base.GetDeliveryCount(message) + message.GetRetryCount(); 
         }
     }
 }

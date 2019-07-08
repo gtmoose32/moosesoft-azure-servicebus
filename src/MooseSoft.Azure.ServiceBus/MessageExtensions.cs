@@ -33,5 +33,7 @@ namespace MooseSoft.Azure.ServiceBus
 
             return deferredPointer;
         }
+
+        public static int GetDeliveryCount(this Message message) => message.SystemProperties.DeliveryCount;
     }
 }

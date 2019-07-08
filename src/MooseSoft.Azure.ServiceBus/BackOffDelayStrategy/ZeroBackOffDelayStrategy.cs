@@ -1,16 +1,14 @@
-﻿namespace MooseSoft.Azure.ServiceBus.BackOffDelayStrategy
+﻿using MooseSoft.Azure.ServiceBus.Abstractions;
+using System;
+
+namespace MooseSoft.Azure.ServiceBus.BackOffDelayStrategy
 {
     /// <summary>
-    /// ZeroBackOffDelayStrategy uses <see cref="ConstantBackOffDelayStrategy"/> that is set to constant of zero.
-    /// This strategy will always return no delay.
+    /// ZeroBackOffDelayStrategy will always return zero delay.
     /// </summary>
-    public class ZeroBackOffDelayStrategy : ConstantBackOffDelayStrategy
+    public class ZeroBackOffDelayStrategy : IBackOffDelayStrategy
     {
-        /// <summary>
-        /// Creates a new instance of the class and sets the constant delay to zero.
-        /// </summary>
-        public ZeroBackOffDelayStrategy() : base(0)
-        {
-        }
+        /// <inheritdoc cref="IBackOffDelayStrategy"/>
+        public TimeSpan Calculate(int attempts) => TimeSpan.Zero;
     }
 }
