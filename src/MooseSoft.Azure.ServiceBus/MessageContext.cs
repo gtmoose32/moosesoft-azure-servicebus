@@ -2,6 +2,7 @@
 using Microsoft.Azure.ServiceBus.Core;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace MooseSoft.Azure.ServiceBus
 {
@@ -25,8 +26,10 @@ namespace MooseSoft.Azure.ServiceBus
         /// </summary>
         /// <returns></returns>
         [ExcludeFromCodeCoverage]
-        public virtual IMessageSender CreateMessageSender() 
-            => new MessageSender(MessageReceiver.ServiceBusConnection, MessageReceiver.Path);
+        public virtual IMessageSender CreateMessageSender()
+            => new MessageSender(
+                MessageReceiver.ServiceBusConnection,
+                MessageReceiver.Path.Split(new[] {"/Subscriptions/"}, StringSplitOptions.RemoveEmptyEntries).First());
 
         /// <summary>
         /// 
