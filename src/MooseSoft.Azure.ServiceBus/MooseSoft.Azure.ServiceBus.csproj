@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <Authors>Marty Mathis</Authors>
     <Company />
     <Description>Provides classes to facilitate advanced message processing scenarios using Microsoft Azure Service Bus, including retry with back delay handling.</Description>
@@ -14,7 +14,7 @@
     <PackageTags>azure service bus retry delay backoff message receiver queue topic</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageReleaseNotes>Updated MessageContext to properly handle creating MessageSender for topic instead of queue.</PackageReleaseNotes>
+    <PackageReleaseNotes>Updated Delay Strategies to take TimeSpan as input instead of minutes in constructor.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
