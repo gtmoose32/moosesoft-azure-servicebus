@@ -8,19 +8,19 @@ namespace MooseSoft.Azure.ServiceBus.BackOffDelayStrategy
     /// </summary>
     public class LinearBackOffDelayStrategy : IBackOffDelayStrategy
     {
-        private readonly TimeSpan _multiplier;
+        private readonly int _multiplier;
 
-        public LinearBackOffDelayStrategy(TimeSpan multiplier)
+        public LinearBackOffDelayStrategy(int multiplier)
         {
             _multiplier = multiplier;
         }
 
         /// <inheritdoc cref="IBackOffDelayStrategy"/>
-        public virtual TimeSpan Calculate(int attempts) => TimeSpan.FromTicks(_multiplier.Ticks * attempts);
+        public virtual TimeSpan Calculate(int attempts) => TimeSpan.FromMinutes(_multiplier * attempts);
 
         /// <summary>
         /// Creates an instance of this back off delay strategy with default settings.
         /// </summary>
-        public static IBackOffDelayStrategy Default => new LinearBackOffDelayStrategy(TimeSpan.FromMinutes(2));
+        public static IBackOffDelayStrategy Default => new LinearBackOffDelayStrategy(2);
     }
 }

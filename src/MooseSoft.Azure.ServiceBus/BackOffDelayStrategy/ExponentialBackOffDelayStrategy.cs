@@ -22,6 +22,15 @@ namespace MooseSoft.Azure.ServiceBus.BackOffDelayStrategy
             _maxDelay = maxDelayTime > TimeSpan.Zero ? maxDelayTime : DefaultMaxDelayTime;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="maxDelayMinutes"></param>
+        public ExponentialBackOffDelayStrategy(int maxDelayMinutes)
+        {
+            _maxDelay = TimeSpan.FromMinutes(maxDelayMinutes > 0 ? maxDelayMinutes : DefaultMaxDelayTime.Minutes);
+        }
+
         /// <inheritdoc cref="IBackOffDelayStrategy"/>
         public virtual TimeSpan Calculate(int attempts)
             => new[] { TimeSpan.FromSeconds(100 * Math.Pow(attempts, 2)), _maxDelay }.Min();
