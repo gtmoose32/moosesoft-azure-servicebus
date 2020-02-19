@@ -8,13 +8,18 @@ namespace MooseSoft.Azure.ServiceBus.BackOffDelayStrategy
     /// </summary>
     public class ConstantBackOffDelayStrategy : IBackOffDelayStrategy
     {
-        private const int DefaultBackOffDelayMinutes = 5;
+        private static readonly TimeSpan DefaultBackOffDelayTime = TimeSpan.FromMinutes(5);
 
         private readonly TimeSpan _backOffDelay;
 
+        public ConstantBackOffDelayStrategy(TimeSpan backOffDelayTime)
+        {
+            _backOffDelay = backOffDelayTime >= TimeSpan.Zero ? backOffDelayTime : DefaultBackOffDelayTime;
+        }
+
         public ConstantBackOffDelayStrategy(int backOffDelayMinutes)
         {
-            _backOffDelay = TimeSpan.FromMinutes(backOffDelayMinutes >= 0 ? backOffDelayMinutes : DefaultBackOffDelayMinutes);    
+            _backOffDelay = TimeSpan.FromMinutes(backOffDelayMinutes >= 0 ? backOffDelayMinutes : DefaultBackOffDelayTime.Minutes);
         }
 
         /// <inheritdoc cref="IBackOffDelayStrategy"/>
@@ -23,6 +28,6 @@ namespace MooseSoft.Azure.ServiceBus.BackOffDelayStrategy
         /// <summary>
         /// Creates an instance of this back off delay strategy with default settings.
         /// </summary>
-        public static IBackOffDelayStrategy Default => new ConstantBackOffDelayStrategy(DefaultBackOffDelayMinutes);
+        public static IBackOffDelayStrategy Default => new ConstantBackOffDelayStrategy(DefaultBackOffDelayTime);
     }
 }

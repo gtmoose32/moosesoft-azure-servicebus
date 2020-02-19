@@ -9,9 +9,18 @@ namespace MooseSoft.Azure.ServiceBus.BackOffDelayStrategy
     /// </summary>
     public class ExponentialBackOffDelayStrategy : IBackOffDelayStrategy
     {
-        private const int DefaultMaxDelayMinutes = 60;
+        private static readonly TimeSpan DefaultMaxDelayTime = TimeSpan.FromMinutes(60);
 
         private readonly TimeSpan _maxDelay;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="maxDelayTime"></param>
+        public ExponentialBackOffDelayStrategy(TimeSpan maxDelayTime)
+        {
+            _maxDelay = maxDelayTime > TimeSpan.Zero ? maxDelayTime : DefaultMaxDelayTime;
+        }
 
         /// <summary>
         /// 
@@ -19,7 +28,7 @@ namespace MooseSoft.Azure.ServiceBus.BackOffDelayStrategy
         /// <param name="maxDelayMinutes"></param>
         public ExponentialBackOffDelayStrategy(int maxDelayMinutes)
         {
-            _maxDelay = TimeSpan.FromMinutes(maxDelayMinutes > 0 ? maxDelayMinutes : DefaultMaxDelayMinutes);
+            _maxDelay = TimeSpan.FromMinutes(maxDelayMinutes > 0 ? maxDelayMinutes : DefaultMaxDelayTime.Minutes);
         }
 
         /// <inheritdoc cref="IBackOffDelayStrategy"/>
@@ -29,6 +38,6 @@ namespace MooseSoft.Azure.ServiceBus.BackOffDelayStrategy
         /// <summary>
         /// Creates an instance of this back off delay strategy with default settings.
         /// </summary>
-        public static IBackOffDelayStrategy Default = new ExponentialBackOffDelayStrategy(DefaultMaxDelayMinutes);
+        public static IBackOffDelayStrategy Default = new ExponentialBackOffDelayStrategy(DefaultMaxDelayTime);
     }
 }
