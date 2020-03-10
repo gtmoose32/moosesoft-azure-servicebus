@@ -21,12 +21,11 @@ namespace MooseSoft.Azure.ServiceBus.Abstractions
 
         private readonly Func<Exception, bool> _canHandle;
 
-        protected FailurePolicyBase(Func<Exception, bool> canHandle, int maxDeliveryCount = 10, IBackOffDelayStrategy backOffDelayStrategy = null)
+        protected FailurePolicyBase(Func<Exception, bool> canHandle, IBackOffDelayStrategy backOffDelayStrategy = null, int maxDeliveryCount = 10)
         {
             _canHandle = canHandle;
-            MaxDeliveryCount = maxDeliveryCount >= 0 ? maxDeliveryCount : 10;
             BackOffDelayStrategy = backOffDelayStrategy ?? new ZeroBackOffDelayStrategy();
-
+            MaxDeliveryCount = maxDeliveryCount >= 0 ? maxDeliveryCount : 10;
         }
 
         public bool CanHandle(Exception exception) => _canHandle(exception);
