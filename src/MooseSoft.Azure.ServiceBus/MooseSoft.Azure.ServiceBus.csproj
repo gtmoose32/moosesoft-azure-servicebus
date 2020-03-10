@@ -22,6 +22,7 @@ Changes in 2.0.0
 * ConstantBackOffDelayStrategy and ExponentialBackOffDelayStrategy have both had ctor removed that was no longer necessary.
 * Reordered ctor params for failure policy classes to reflect likely usage.
 * LinearBackOffDelayStrategy now accepts a TimeSpan as ctor argument instead of Int32 to give more flexibility.
+* Deferred locator messages now use Label and CorrelationId properties from the Message class to identify and locate deferred messages instead of custom key/value in UserProperties.
     </PackageReleaseNotes>
   </PropertyGroup>
 
