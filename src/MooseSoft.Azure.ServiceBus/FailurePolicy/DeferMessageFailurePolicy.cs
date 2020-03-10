@@ -32,15 +32,14 @@ namespace MooseSoft.Azure.ServiceBus.FailurePolicy
                 return;
             }
 
-            var deferredPointer = context.Message.CreateDeferredLocatorMessage(
-                BackOffDelayStrategy.Calculate(deliveryCount));
+            var messageLocator = context.Message.CreateDeferredMessageLocator(BackOffDelayStrategy.Calculate(deliveryCount));
 
             var sender = context.CreateMessageSender();
             try
             {
                 using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
                 {
-                    await sender.SendAsync(deferredPointer).ConfigureAwait(false);
+                    await sender.SendAsync(messageLocator).ConfigureAwait(false);
                     await context.MessageReceiver.DeferAsync(context.Message.SystemProperties.LockToken)
                         .ConfigureAwait(false);
                     scope.Complete();

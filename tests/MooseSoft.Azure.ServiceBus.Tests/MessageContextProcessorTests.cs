@@ -61,7 +61,9 @@ namespace MooseSoft.Azure.ServiceBus.Tests
         {
             //Arrange
             var message = CreateMessage();
-            message.UserProperties.Add(Constants.DeferredKey, long.MaxValue);
+            message.Label = Constants.DeferredKey;
+            message.CorrelationId = long.MaxValue.ToString();
+
             var deferredMessage = CreateMessage();
             _messageReceiver.ReceiveDeferredMessageAsync(Arg.Is(long.MaxValue)).Returns(deferredMessage);
 

@@ -24,13 +24,12 @@ namespace MooseSoft.Azure.ServiceBus
 
         internal static async Task<Message> GetDeferredMessageAsync(this IMessageReceiver messageReceiver, Message message)
         {
-            var sequenceNumber = message.GetDeferredSequenceNumber();
-            if (!sequenceNumber.HasValue) return message;
+            if (!message.TryGetDeferredSequenceNumber(out var sequenceNumber)) return message;
 
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 await messageReceiver.CompleteAsync(message.SystemProperties.LockToken).ConfigureAwait(false);
-                message = await messageReceiver.ReceiveDeferredMessageAsync(sequenceNumber.Value)
+                message = await messageReceiver.ReceiveDeferredMessageAsync(sequenceNumber)
                     .ConfigureAwait(false);
 
                 scope.Complete();

@@ -1,7 +1,9 @@
-﻿using Microsoft.Azure.ServiceBus.Core;
+﻿using Microsoft.Azure.ServiceBus;
+using Microsoft.Azure.ServiceBus.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 
 namespace MooseSoft.Azure.ServiceBus.Tests
 {
@@ -22,28 +24,19 @@ namespace MooseSoft.Azure.ServiceBus.Tests
             sut.Received().RegisterPlugin(Arg.Any<DeferredMessagePlugin>());
         }
 
-        //public static IMessageReceiver AddDeferredMessagePlugin(this IMessageReceiver messageReceiver)
-        //{
-        //    messageReceiver.RegisterPlugin(new DeferredMessagePlugin(messageReceiver));
+        [TestMethod]
+        public async Task GetDeferredMessageAsync_DeferredSequenceNumber_NotFound_Test()
+        {
+            //Arrange
+            var message = new Message();
+            var sut = Substitute.For<IMessageReceiver>();
 
-        //    return messageReceiver;
-        //}
+            //Act
+            var result = await sut.GetDeferredMessageAsync(message);
 
-        //public static async Task<Message> GetDeferredMessageAsync(this IMessageReceiver messageReceiver, Message message)
-        //{
-        //    var sequenceNumber = message.GetDeferredSequenceNumber();
-        //    if (!sequenceNumber.HasValue) return message;
-
-        //    using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-        //    {
-        //        await messageReceiver.CompleteAsync(message.SystemProperties.LockToken).ConfigureAwait(false);
-        //        message = await messageReceiver.ReceiveDeferredMessageAsync(sequenceNumber.Value)
-        //            .ConfigureAwait(false);
-
-        //        scope.Complete();
-        //    }
-
-        //    return message;
-        //}
+            //Assert
+            await sut.DidNotReceiveWithAnyArgs().CompleteAsync(Arg.Any<string>()).ConfigureAwait(false);
+            await sut.DidNotReceiveWithAnyArgs().ReceiveDeferredMessageAsync(Arg.Any<long>()).ConfigureAwait(false);
+        }
     }
 }

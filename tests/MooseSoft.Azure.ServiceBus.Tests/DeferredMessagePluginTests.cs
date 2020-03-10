@@ -17,7 +17,9 @@ namespace MooseSoft.Azure.ServiceBus.Tests
             //Arrange
             var receiver = Substitute.For<IMessageReceiver>();
             var message = CreateMessage();
-            message.UserProperties.Add(Constants.DeferredKey, long.MaxValue);
+            message.Label = Constants.DeferredKey;
+            message.CorrelationId = long.MaxValue.ToString();
+
             var deferredMessage = CreateMessage();
             receiver.ReceiveDeferredMessageAsync(long.MaxValue).Returns(deferredMessage);
 
@@ -39,6 +41,21 @@ namespace MooseSoft.Azure.ServiceBus.Tests
 
             await receiver.Received().CompleteAsync(Arg.Is(message.SystemProperties.LockToken)).ConfigureAwait(false);
             await receiver.Received().ReceiveDeferredMessageAsync(Arg.Is(long.MaxValue)).ConfigureAwait(false);
+        }
+
+        [TestMethod]
+        public void Name_Test()
+        {
+            //Arrange
+            var receiver = Substitute.For<IMessageReceiver>();
+            var sut = new DeferredMessagePlugin(receiver);
+
+            //Act
+            var result = sut.Name;
+
+            //Assert
+            result.Should().NotBeNull();
+            result.Should().Be(nameof(DeferredMessagePlugin));
         }
     }
 }

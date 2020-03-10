@@ -1,7 +1,6 @@
 ﻿using MooseSoft.Azure.ServiceBus.Abstractions;
 using MooseSoft.Azure.ServiceBus.FailurePolicy;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -53,7 +52,7 @@ namespace MooseSoft.Azure.ServiceBus
 
         private static async Task CheckForDeferredMessageAsync(MessageContext context)
         {
-            if (context.MessageReceiver.RegisteredPlugins.Any(p => p.Name == nameof(DeferredMessagePlugin))) return;
+            if (!context.Message.IsDeferredMessageLocator()) return;
 
             context.Message = await context.MessageReceiver.GetDeferredMessageAsync(context.Message);
         }
