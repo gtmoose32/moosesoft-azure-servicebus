@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <Version>2.0.0-prerelease1</Version>
+    <Version>2.0.0</Version>
     <Authors>Marty Mathis</Authors>
     <Company />
     <Description>Provides classes to facilitate advanced message processing scenarios using Microsoft Azure Service Bus, including retry with back off delay handling.</Description>
@@ -20,6 +20,8 @@ Changes in 2.0.0
 * Added ServiceBusPlugin to handle defer message failure policy and extension method to register the plugin.
 * Added an optional should complete on exception func to MessageContextProcessor ctor that determines whether a message should be completed on an exception.
 * ConstantBackOffDelayStrategy and ExponentialBackOffDelayStrategy have both had ctor removed that was no longer necessary.
+* Reordered ctor params for failure policy classes to reflect likely usage.
+* LinearBackOffDelayStrategy now accepts a TimeSpan as ctor argument instead of Int32 to give more flexibility.
     </PackageReleaseNotes>
   </PropertyGroup>
 
