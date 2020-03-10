@@ -17,11 +17,6 @@ namespace MooseSoft.Azure.ServiceBus.BackOffDelayStrategy
             _backOffDelay = backOffDelayTime >= TimeSpan.Zero ? backOffDelayTime : DefaultBackOffDelayTime;
         }
 
-        public ConstantBackOffDelayStrategy(int backOffDelayMinutes)
-        {
-            _backOffDelay = TimeSpan.FromMinutes(backOffDelayMinutes >= 0 ? backOffDelayMinutes : DefaultBackOffDelayTime.Minutes);
-        }
-
         /// <inheritdoc cref="IBackOffDelayStrategy"/>
         public TimeSpan Calculate(int attempts) => _backOffDelay;
 
