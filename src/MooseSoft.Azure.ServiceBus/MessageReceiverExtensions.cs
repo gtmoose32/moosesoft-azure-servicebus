@@ -5,8 +5,16 @@ using System.Transactions;
 
 namespace MooseSoft.Azure.ServiceBus
 {
+    /// <summary>
+    /// Class that defines extension methods for Azure Service Bus <see cref="IMessageReceiver"/>
+    /// </summary>
     public static class MessageReceiverExtensions
     {
+        /// <summary>
+        /// Adds a <see cref="DeferredMessagePlugin"/> to the <see cref="IMessageReceiver"/> list of registered plugins.  This will handle any deferred message failure policy actions.
+        /// </summary>
+        /// <param name="messageReceiver">The message receiver to register the <see cref="ServiceBusPlugin"/> to.</param>
+        /// <returns><see cref="IMessageReceiver"/></returns>
         public static IMessageReceiver AddDeferredMessagePlugin(this IMessageReceiver messageReceiver)
         {
             messageReceiver.RegisterPlugin(new DeferredMessagePlugin(messageReceiver));
@@ -14,7 +22,7 @@ namespace MooseSoft.Azure.ServiceBus
             return messageReceiver;
         }
 
-        public static async Task<Message> GetDeferredMessageAsync(this IMessageReceiver messageReceiver, Message message)
+        internal static async Task<Message> GetDeferredMessageAsync(this IMessageReceiver messageReceiver, Message message)
         {
             var sequenceNumber = message.GetDeferredSequenceNumber();
             if (!sequenceNumber.HasValue) return message;
