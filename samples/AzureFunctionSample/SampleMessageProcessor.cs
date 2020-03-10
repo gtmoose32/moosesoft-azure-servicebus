@@ -1,5 +1,6 @@
 ﻿using Microsoft.Azure.ServiceBus;
 using MooseSoft.Azure.ServiceBus.Abstractions;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,8 +15,7 @@ namespace AzureFunctionSample
     {
         public Task ProcessMessageAsync(Message message, CancellationToken cancellationToken)
         {
-            //TODO: Add real processing logic
-            return Task.CompletedTask;
+            throw new InvalidOperationException("Test failure policy with back off delay strategy.");
         }
     }
 }

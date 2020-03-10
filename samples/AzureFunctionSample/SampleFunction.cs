@@ -25,8 +25,7 @@ namespace AzureFunctionSample
         {
             MessageContextProcessor = new MessageContextProcessor(
                 new SampleMessageProcessor(),
-                new DeferMessageFailurePolicy(ex => true,
-                    backOffDelayStrategy: ExponentialBackOffDelayStrategy.Default));
+                new CloneMessageFailurePolicy(ex => true, ExponentialBackOffDelayStrategy.Default));
         }
 
         [FunctionName("SampleFunction")]
