@@ -5,6 +5,7 @@ using MooseSoft.Azure.ServiceBus.Abstractions;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,7 +29,7 @@ namespace MooseSoft.Azure.ServiceBus.Tests
             _messageSender = Substitute.For<IMessageSender>();
             _failurePolicy = Substitute.For<IFailurePolicy>();
             _messageProcessor = Substitute.For<IMessageProcessor>();
-            _sut = new MessageContextProcessor(_messageProcessor, _failurePolicy);
+            _sut = new MessageContextProcessor(_messageProcessor, _failurePolicy, e => e is InvalidOperationException);
         }
 
         [TestMethod]
@@ -46,7 +47,12 @@ namespace MooseSoft.Azure.ServiceBus.Tests
                 .ConfigureAwait(false);
 
             await _messageReceiver.Received().CompleteAsync(Arg.Is(message.SystemProperties.LockToken)).ConfigureAwait(false);
-            await _messageReceiver.DidNotReceiveWithAnyArgs().AbandonAsync(null).ConfigureAwait(false);
+            await _messageReceiver.DidNotReceiveWithAnyArgs().ReceiveDeferredMessageAsync(Arg.Any<long>()).ConfigureAwait(false);
+            await _messageReceiver.DidNotReceiveWithAnyArgs().AbandonAsync(Arg.Any<string>()).ConfigureAwait(false);
+
+            _failurePolicy.DidNotReceiveWithAnyArgs().CanHandle(Arg.Any<Exception>());
+            await _failurePolicy.DidNotReceiveWithAnyArgs()
+                .HandleFailureAsync(Arg.Any<MessageContext>(), Arg.Any<CancellationToken>()).ConfigureAwait(false);
 
         }
 
@@ -72,17 +78,75 @@ namespace MooseSoft.Azure.ServiceBus.Tests
             await _messageReceiver.Received().CompleteAsync(Arg.Is(deferredMessage.SystemProperties.LockToken)).ConfigureAwait(false);
             await _messageReceiver.Received().ReceiveDeferredMessageAsync(Arg.Is(long.MaxValue)).ConfigureAwait(false);
             await _messageReceiver.DidNotReceiveWithAnyArgs().AbandonAsync(null).ConfigureAwait(false);
+
+            _failurePolicy.DidNotReceiveWithAnyArgs().CanHandle(Arg.Any<Exception>());
+            await _failurePolicy.DidNotReceiveWithAnyArgs()
+                .HandleFailureAsync(Arg.Any<MessageContext>(), Arg.Any<CancellationToken>()).ConfigureAwait(false);
         }
 
         [TestMethod]
-        public async Task ProcessMessageContextAsync_Failed_CannotHandle_Test()
+        public async Task ProcessMessageContextAsync_Deferred_UsePlugin_Success_Test()
+        {
+            //Arrange
+            var message = CreateMessage();
+            _messageReceiver.RegisteredPlugins.Returns(
+                new List<ServiceBusPlugin>
+                {
+                    new DeferredMessagePlugin(_messageReceiver)
+                });
+
+            var context = new TestMessageContext(message, _messageReceiver, _messageSender);
+
+            //Act
+            await _sut.ProcessMessageContextAsync(context, CancellationToken.None).ConfigureAwait(false);
+
+            //Assert
+            await _messageProcessor.Received().ProcessMessageAsync(Arg.Is(message), Arg.Is(CancellationToken.None))
+                .ConfigureAwait(false);
+
+            await _messageReceiver.Received().CompleteAsync(Arg.Is(message.SystemProperties.LockToken)).ConfigureAwait(false);
+            await _messageReceiver.DidNotReceiveWithAnyArgs().ReceiveDeferredMessageAsync(Arg.Any<long>()).ConfigureAwait(false);
+            await _messageReceiver.DidNotReceiveWithAnyArgs().AbandonAsync(null).ConfigureAwait(false);
+
+            _failurePolicy.DidNotReceiveWithAnyArgs().CanHandle(Arg.Any<Exception>());
+            await _failurePolicy.DidNotReceiveWithAnyArgs()
+                .HandleFailureAsync(Arg.Any<MessageContext>(), Arg.Any<CancellationToken>()).ConfigureAwait(false);
+        }
+
+        [TestMethod]
+        public async Task ProcessMessageContextAsync_Failed_Complete_Test()
+        {
+            //Arrange
+            var message = CreateMessage();
+            var context = new TestMessageContext(message, _messageReceiver, _messageSender);
+            _messageProcessor.ProcessMessageAsync(Arg.Any<Message>(), Arg.Any<CancellationToken>())
+                .Throws(new InvalidOperationException());
+
+            //Act
+            await _sut.ProcessMessageContextAsync(context, CancellationToken.None).ConfigureAwait(false);
+
+            //Assert
+            await _messageProcessor.Received().ProcessMessageAsync(Arg.Is(message), Arg.Is(CancellationToken.None))
+                .ConfigureAwait(false);
+
+            await _messageReceiver.Received().CompleteAsync(Arg.Is(message.SystemProperties.LockToken)).ConfigureAwait(false);
+            await _messageReceiver.DidNotReceiveWithAnyArgs().AbandonAsync(Arg.Any<string>()).ConfigureAwait(false);
+
+            _failurePolicy.DidNotReceiveWithAnyArgs().CanHandle(Arg.Any<Exception>());
+            await _failurePolicy.DidNotReceiveWithAnyArgs()
+                .HandleFailureAsync(Arg.Any<MessageContext>(), Arg.Any<CancellationToken>()).ConfigureAwait(false);
+        }
+
+        [TestMethod]
+        public async Task ProcessMessageContextAsync_Failed_Abandon_Test()
         {
             //Arrange
             var message = CreateMessage();
             var context = new TestMessageContext(message, _messageReceiver, _messageSender);
             _failurePolicy.CanHandle(Arg.Any<Exception>()).Returns(false);
+            var exception = new Exception();
             _messageProcessor.ProcessMessageAsync(Arg.Any<Message>(), Arg.Any<CancellationToken>())
-                .Throws(new Exception());
+                .Throws(exception);
 
             //Act
             await _sut.ProcessMessageContextAsync(context, CancellationToken.None).ConfigureAwait(false);
@@ -93,6 +157,10 @@ namespace MooseSoft.Azure.ServiceBus.Tests
 
             await _messageReceiver.DidNotReceiveWithAnyArgs().CompleteAsync(null).ConfigureAwait(false);
             await _messageReceiver.Received().AbandonAsync(Arg.Is(message.SystemProperties.LockToken)).ConfigureAwait(false);
+
+            _failurePolicy.Received().CanHandle(Arg.Is(exception));
+            await _failurePolicy.DidNotReceiveWithAnyArgs()
+                .HandleFailureAsync(Arg.Any<MessageContext>(), Arg.Any<CancellationToken>()).ConfigureAwait(false);
         }
 
         [TestMethod]
@@ -102,8 +170,9 @@ namespace MooseSoft.Azure.ServiceBus.Tests
             var message = CreateMessage();
             var context = new TestMessageContext(message, _messageReceiver, _messageSender);
             _failurePolicy.CanHandle(Arg.Any<Exception>()).Returns(true);
+            var exception = new Exception();
             _messageProcessor.ProcessMessageAsync(Arg.Any<Message>(), Arg.Any<CancellationToken>())
-                .Throws(new Exception());
+                .Throws(exception);
 
             //Act
             await _sut.ProcessMessageContextAsync(context, CancellationToken.None).ConfigureAwait(false);
@@ -115,7 +184,8 @@ namespace MooseSoft.Azure.ServiceBus.Tests
             await _messageReceiver.DidNotReceiveWithAnyArgs().CompleteAsync(null).ConfigureAwait(false);
             await _messageReceiver.DidNotReceiveWithAnyArgs().AbandonAsync(null).ConfigureAwait(false);
 
-            await _failurePolicy.HandleFailureAsync(Arg.Is(context), Arg.Is(CancellationToken.None))
+            _failurePolicy.Received().CanHandle(Arg.Is(exception));
+            await _failurePolicy.Received().HandleFailureAsync(Arg.Is(context), Arg.Is(CancellationToken.None))
                 .ConfigureAwait(false);
         }
     }
