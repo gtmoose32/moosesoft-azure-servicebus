@@ -2,7 +2,7 @@
 {
     internal class Constants
     {
-        public const string DeferredKey = "DeferredSequenceNumber";
+        public const string DeferredKey = "deferred-message-locator";
         public const string RetryCountKey = "RetryCount";
     }
 }

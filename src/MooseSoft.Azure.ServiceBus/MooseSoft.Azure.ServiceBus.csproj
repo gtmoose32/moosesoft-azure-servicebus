@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <Version>1.0.2</Version>
+    <Version>2.0.0</Version>
     <Authors>Marty Mathis</Authors>
     <Company />
-    <Description>Provides classes to facilitate advanced message processing scenarios using Microsoft Azure Service Bus, including retry with back delay handling.</Description>
+    <Description>Provides classes to facilitate advanced message processing scenarios using Microsoft Azure Service Bus, including retry with back off delay handling.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/gtmoose32/moosesoft-azure-servicebus</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
@@ -14,11 +14,20 @@
     <PackageTags>azure service bus retry delay backoff message receiver queue topic</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <PackageReleaseNotes>Updated Delay Strategies to take TimeSpan as input instead of minutes in constructor.</PackageReleaseNotes>
+    <DocumentationFile Condition="'$(Configuration)'=='Release'">bin\Release\netstandard2.0\MooseSoft.Azure.ServiceBus.xml</DocumentationFile>
+    <PackageReleaseNotes>
+Changes in 2.0.0
+* Added ServiceBusPlugin to handle defer message failure policy and extension method to register the plugin.
+* Added an optional should complete on exception func to MessageContextProcessor ctor that determines whether a message should be completed on an exception.
+* ConstantBackOffDelayStrategy and ExponentialBackOffDelayStrategy have both had ctor removed that was no longer necessary.
+* Reordered ctor params for failure policy classes to reflect likely usage.
+* LinearBackOffDelayStrategy now accepts a TimeSpan as ctor argument instead of Int32 to give more flexibility.
+* Deferred locator messages now use Label and CorrelationId properties from the Message class to identify and locate deferred messages instead of custom key/value in UserProperties.
+    </PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.ServiceBus" Version="3.4.0" />
+    <PackageReference Include="Microsoft.Azure.ServiceBus" Version="4.1.2" />
   </ItemGroup>
 
 </Project>

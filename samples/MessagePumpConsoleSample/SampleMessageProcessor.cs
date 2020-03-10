@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace AzureFunctionSample
+namespace MessagePumpConsoleSample
 {
     /// <summary>
     /// This class should contain code custom code necessary to "process" the message received from Service Bus

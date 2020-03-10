@@ -14,7 +14,8 @@ namespace MooseSoft.Azure.ServiceBus.Tests
             var message = new Message
             {
                 Body = Encoding.UTF8.GetBytes("Test!"),
-                ContentType = "application/json"
+                ContentType = "application/json",
+                MessageId = Guid.NewGuid().ToString()
             };
 
             typeof(Message.SystemPropertiesCollection)

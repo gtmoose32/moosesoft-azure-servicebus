@@ -6,33 +6,28 @@ namespace MooseSoft.Azure.ServiceBus
 {
     internal static class MessageExtensions
     {
-        private static bool HasDeferredKey(this Message message)
-            => message.UserProperties.ContainsKey(Constants.DeferredKey) &&
-               message.UserProperties[Constants.DeferredKey] != null;
+        public static bool IsDeferredMessageLocator(this Message message)
+            => message.Label != null &&
+               message.Label.Equals(Constants.DeferredKey, StringComparison.OrdinalIgnoreCase);
 
-        public static long? GetDeferredSequenceNumber(this Message message)
-            => message.HasDeferredKey()
-                ? (long) message.UserProperties[Constants.DeferredKey]
-                : null as long?;
+        public static bool TryGetDeferredSequenceNumber(this Message message, out long sequenceNumber) 
+            => long.TryParse(message.CorrelationId, out sequenceNumber);
 
-        public static int GetRetryCount(this Message message) => 
+        public static int GetRetryCount(this Message message) =>
             message.UserProperties.ContainsKey(Constants.RetryCountKey) && message.UserProperties[Constants.RetryCountKey] != null
-                ? (int) message.UserProperties[Constants.RetryCountKey]
+                ? (int)message.UserProperties[Constants.RetryCountKey]
                 : 0;
 
-        public static Message CreateDeferredLocatorMessage(this Message message, TimeSpan backOffDelay)
-        {
-            var deferredPointer = new Message
+        public static Message CreateDeferredMessageLocator(this Message message, TimeSpan backOffDelay) =>
+            new Message
             {
                 Body = Encoding.UTF8.GetBytes(message.SystemProperties.SequenceNumber.ToString()),
+                CorrelationId = message.SystemProperties.SequenceNumber.ToString(),
                 MessageId = Guid.NewGuid().ToString(),
+                Label = Constants.DeferredKey,
                 PartitionKey = message.PartitionKey,
                 ScheduledEnqueueTimeUtc = DateTime.UtcNow + backOffDelay
             };
-            deferredPointer.UserProperties.Add(Constants.DeferredKey, message.SystemProperties.SequenceNumber);
-
-            return deferredPointer;
-        }
 
         public static int GetDeliveryCount(this Message message) => message.SystemProperties.DeliveryCount;
     }

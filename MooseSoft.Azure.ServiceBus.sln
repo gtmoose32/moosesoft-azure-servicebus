@@ -13,7 +13,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MooseSoft.Azure.ServiceBus.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{F9AF4DF3-CD1A-47A3-9117-3708D2D29D73}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureFunctionSample", "samples\AzureFunctionSample\AzureFunctionSample.csproj", "{6714BE22-F62A-4D19-A8C4-40098081D894}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureFunctionSample", "samples\AzureFunctionSample\AzureFunctionSample.csproj", "{6714BE22-F62A-4D19-A8C4-40098081D894}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8E1A9EA3-8607-41D2-AE7D-A92EA67AA9AD}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessagePumpConsoleSample", "samples\MessagePumpConsoleSample\MessagePumpConsoleSample.csproj", "{56DECBC5-33A5-4B83-9356-AEA24A69ABB7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +40,10 @@ Global
 		{6714BE22-F62A-4D19-A8C4-40098081D894}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6714BE22-F62A-4D19-A8C4-40098081D894}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6714BE22-F62A-4D19-A8C4-40098081D894}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56DECBC5-33A5-4B83-9356-AEA24A69ABB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56DECBC5-33A5-4B83-9356-AEA24A69ABB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56DECBC5-33A5-4B83-9356-AEA24A69ABB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56DECBC5-33A5-4B83-9356-AEA24A69ABB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -41,6 +52,7 @@ Global
 		{FA824792-53BC-4256-BE94-D08070C268EB} = {C14D30AB-983A-4DAA-A8A0-C5EE6A4C3F60}
 		{41FC161F-7E49-44DF-8523-EA19478257A3} = {372263FB-0C5C-4054-BF91-33BB81755756}
 		{6714BE22-F62A-4D19-A8C4-40098081D894} = {F9AF4DF3-CD1A-47A3-9117-3708D2D29D73}
+		{56DECBC5-33A5-4B83-9356-AEA24A69ABB7} = {F9AF4DF3-CD1A-47A3-9117-3708D2D29D73}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0EC4DEFE-1C76-4C17-8B81-40B23F28D56A}
