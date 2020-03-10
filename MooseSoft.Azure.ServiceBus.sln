@@ -13,7 +13,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MooseSoft.Azure.ServiceBus.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{F9AF4DF3-CD1A-47A3-9117-3708D2D29D73}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureFunctionSample", "samples\AzureFunctionSample\AzureFunctionSample.csproj", "{6714BE22-F62A-4D19-A8C4-40098081D894}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AzureFunctionSample", "samples\AzureFunctionSample\AzureFunctionSample.csproj", "{6714BE22-F62A-4D19-A8C4-40098081D894}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8E1A9EA3-8607-41D2-AE7D-A92EA67AA9AD}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
