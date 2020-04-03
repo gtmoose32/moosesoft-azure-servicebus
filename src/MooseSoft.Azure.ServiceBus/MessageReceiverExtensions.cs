@@ -1,5 +1,6 @@
 ﻿using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
+using MooseSoft.Azure.ServiceBus.Abstractions.MessagePumpBuilder;
 using System.Threading.Tasks;
 using System.Transactions;
 
@@ -20,6 +21,16 @@ namespace MooseSoft.Azure.ServiceBus
             messageReceiver.RegisterPlugin(new DeferredMessagePlugin(messageReceiver));
 
             return messageReceiver;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="receiver"></param>
+        /// <returns></returns>
+        public static IMessageProcessorHolder ConfigureMessagePump(this IMessageReceiver receiver)
+        {
+            return new MessagePumpBuilder.MessagePumpBuilder(receiver);
         }
 
         internal static async Task<Message> GetDeferredMessageAsync(this IMessageReceiver messageReceiver, Message message)
