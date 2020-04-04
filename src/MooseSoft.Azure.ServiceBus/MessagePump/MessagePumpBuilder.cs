@@ -19,8 +19,6 @@ namespace MooseSoft.Azure.ServiceBus.MessagePump
             };
         }
 
-        private static bool DefaultCanHandle(Exception exception) => true;
-
         private IFailurePolicy CreateFailurePolicy()
         {
             return _builderState.FailurePolicyType == typeof(CloneMessageFailurePolicy)
@@ -30,16 +28,13 @@ namespace MooseSoft.Azure.ServiceBus.MessagePump
 
         public IBackDelayStrategyHolder WithCloneFailurePolicy(Func<Exception, bool> canHandle = null)
         {
-            _builderState.FailurePolicyType = typeof(CloneMessageFailurePolicy);
-            _builderState.CanHandle = canHandle ?? DefaultCanHandle;
+            SetFailurePolicyInfo(typeof(CloneMessageFailurePolicy), canHandle);
             return this;
         }
 
         public IBackDelayStrategyHolder WithDeferFailurePolicy(Func<Exception, bool> canHandle = null)
         {
-            _builderState.MessageReceiver.AddDeferredMessagePlugin();
-            _builderState.FailurePolicyType = typeof(DeferMessageFailurePolicy);
-            _builderState.CanHandle = canHandle ?? DefaultCanHandle;
+            SetFailurePolicyInfo(typeof(DeferMessageFailurePolicy), canHandle);
             return this;
         }
 
@@ -72,6 +67,14 @@ namespace MooseSoft.Azure.ServiceBus.MessagePump
         {
             _builderState.MessageProcessor = messageProcessor;
             return this;
+        }
+
+        private static bool DefaultCanHandle(Exception exception) => true;
+
+        private void SetFailurePolicyInfo(Type failurePolicyType, Func<Exception, bool> canHandle)
+        {
+            _builderState.FailurePolicyType = failurePolicyType;
+            _builderState.CanHandle = canHandle ?? DefaultCanHandle;
         }
     }
 }
