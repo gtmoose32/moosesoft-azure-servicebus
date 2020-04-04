@@ -2,7 +2,7 @@
 using MooseSoft.Azure.ServiceBus.Abstractions;
 using System;
 
-namespace MooseSoft.Azure.ServiceBus.MessagePumpBuilder
+namespace MooseSoft.Azure.ServiceBus.MessagePump
 {
     internal class MessagePumpBuilderState
     {

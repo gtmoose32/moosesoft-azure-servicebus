@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MooseSoft.Azure.ServiceBus.Abstractions.MessagePumpBuilder
+namespace MooseSoft.Azure.ServiceBus.Abstractions
 {
     public interface IFailurePolicyHolder
     {

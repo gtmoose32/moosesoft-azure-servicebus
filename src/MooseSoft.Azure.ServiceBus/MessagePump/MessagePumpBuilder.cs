@@ -1,12 +1,11 @@
 ﻿using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using MooseSoft.Azure.ServiceBus.Abstractions;
-using MooseSoft.Azure.ServiceBus.Abstractions.MessagePumpBuilder;
 using MooseSoft.Azure.ServiceBus.FailurePolicy;
 using System;
 using System.Threading.Tasks;
 
-namespace MooseSoft.Azure.ServiceBus.MessagePumpBuilder
+namespace MooseSoft.Azure.ServiceBus.MessagePump
 {
     internal class MessagePumpBuilder : IFailurePolicyHolder, IBackDelayStrategyHolder, IMessagePumpBuilder, IMessageProcessorHolder
     {
@@ -50,7 +49,7 @@ namespace MooseSoft.Azure.ServiceBus.MessagePumpBuilder
             return this;
         }
 
-        public void BuildMessagePump(
+        public IMessageReceiver BuildMessagePump(
             Func<ExceptionReceivedEventArgs, Task> exceptionHandler, 
             int maxConcurrentCalls = 10, 
             Func<Exception, bool> shouldCompleteOnException = null)
@@ -65,6 +64,8 @@ namespace MooseSoft.Azure.ServiceBus.MessagePumpBuilder
                 (message, token) => contextProcessor.ProcessMessageContextAsync(
                     new MessageContext(message, _builderState.MessageReceiver), token), 
                 options);
+
+            return _builderState.MessageReceiver;
         }
 
         public IFailurePolicyHolder WithMessageProcessor(IMessageProcessor messageProcessor)
