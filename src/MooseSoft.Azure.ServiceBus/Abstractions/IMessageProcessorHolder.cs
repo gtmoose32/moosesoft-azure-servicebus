@@ -2,6 +2,10 @@
 {
     public interface IMessageProcessorHolder
     {
-        IFailurePolicyHolder WithMessageProcessor(IMessageProcessor messageProcessor);
+        IFailurePolicyHolder WithMessageProcessor<T>(T messageProcessor)
+            where T : IMessageProcessor;
+
+        IFailurePolicyHolder WithMessageProcessor<T>()
+            where T : IMessageProcessor, new();
     }
 }

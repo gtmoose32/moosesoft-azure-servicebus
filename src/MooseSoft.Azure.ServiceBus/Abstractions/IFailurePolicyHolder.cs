@@ -6,5 +6,8 @@ namespace MooseSoft.Azure.ServiceBus.Abstractions
     {
         IBackDelayStrategyHolder WithCloneFailurePolicy(Func<Exception, bool> canHandle = null);
         IBackDelayStrategyHolder WithDeferFailurePolicy(Func<Exception, bool> canHandle = null);
+        IBackDelayStrategyHolder WithAbandonFailurePolicy();
+        IBackDelayStrategyHolder WithFailurePolicy<T>(T failurePolicy)
+            where T : IFailurePolicy;
     }
 }
