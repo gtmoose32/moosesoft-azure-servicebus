@@ -18,13 +18,14 @@ namespace MessagePumpConsoleSample
             //Replace entity path with path to real entity on your ServiceBus namespace
             var receiver = new MessageReceiver(connection, "test");
 
+            //Setup message pump with failure policy and back off delay strategy.
             receiver.ConfigureMessagePump()
-                .WithMessageProcessor(new SampleMessageProcessor())
+                .WithMessageProcessor<SampleMessageProcessor>()
                 .WithDeferFailurePolicy(e => e is InvalidOperationException)
-                .WithBackOffDelayStrategy(ExponentialBackOffDelayStrategy.Default)
+                .WithExponentialBackOffDelayStrategy()
                 .BuildMessagePump(ExceptionReceivedHandler);
 
-    		Console.WriteLine("Press any key to terminate!");
+            Console.WriteLine("Press any key to terminate!");
             Console.Read();
         }
 
