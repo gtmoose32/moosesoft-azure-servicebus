@@ -36,10 +36,12 @@ namespace MooseSoft.Azure.ServiceBus.MessagePump
 
         public IBackDelayStrategyHolder WithAbandonFailurePolicy()
         {
-            return WithFailurePolicy(new AbandonMessageFailurePolicy());
+            WithFailurePolicy(new AbandonMessageFailurePolicy());
+            return this;
         }
 
-        public IBackDelayStrategyHolder WithFailurePolicy<T>(T failurePolicy) where T : IFailurePolicy
+
+        public IMessagePumpBuilder WithFailurePolicy<T>(T failurePolicy) where T : IFailurePolicy
         {
             _builderState.FailurePolicy = failurePolicy;
             return this;
