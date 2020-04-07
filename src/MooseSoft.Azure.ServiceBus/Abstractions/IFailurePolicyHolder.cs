@@ -25,8 +25,8 @@ namespace MooseSoft.Azure.ServiceBus.Abstractions
         /// <summary>
         /// Sets the instance of <see cref="IFailurePolicy"/> to <see cref="AbandonMessageFailurePolicy"/> for the message pump builder to use.
         /// </summary>
-        /// <returns><see cref="IBackDelayStrategyHolder"/></returns>
-        IBackDelayStrategyHolder WithAbandonMessageFailurePolicy();
+        /// <returns>A message pump builder</returns>
+        IMessagePumpBuilder WithAbandonMessageFailurePolicy();
 
         /// <summary>
         /// Sets the instance of <see cref="IFailurePolicy"/> for the message pump builder to use.
