@@ -22,19 +22,19 @@ namespace MooseSoft.Azure.ServiceBus.MessagePump
         }
 
         #region IFailurePolicyHolder Members
-        public IBackDelayStrategyHolder WithCloneFailurePolicy(Func<Exception, bool> canHandle = null)
+        public IBackDelayStrategyHolder WithCloneMessageFailurePolicy(Func<Exception, bool> canHandle = null)
         {
             SetFailurePolicyInfo(typeof(CloneMessageFailurePolicy), canHandle);
             return this;
         }
 
-        public IBackDelayStrategyHolder WithDeferFailurePolicy(Func<Exception, bool> canHandle = null)
+        public IBackDelayStrategyHolder WithDeferMessageFailurePolicy(Func<Exception, bool> canHandle = null)
         {
             SetFailurePolicyInfo(typeof(DeferMessageFailurePolicy), canHandle);
             return this;
         }
 
-        public IBackDelayStrategyHolder WithAbandonFailurePolicy()
+        public IBackDelayStrategyHolder WithAbandonMessageFailurePolicy()
         {
             WithFailurePolicy(new AbandonMessageFailurePolicy());
             return this;
