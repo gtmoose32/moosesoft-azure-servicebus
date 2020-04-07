@@ -1,7 +1,6 @@
 ﻿using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using MooseSoft.Azure.ServiceBus;
-using MooseSoft.Azure.ServiceBus.BackOffDelayStrategy;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
@@ -21,7 +20,7 @@ namespace MessagePumpConsoleSample
             //Setup message pump with failure policy and back off delay strategy.
             receiver.ConfigureMessagePump()
                 .WithMessageProcessor<SampleMessageProcessor>()
-                .WithDeferFailurePolicy(e => e is InvalidOperationException)
+                .WithCloneMessageFailurePolicy(e => e is InvalidOperationException)
                 .WithExponentialBackOffDelayStrategy()
                 .BuildMessagePump(ExceptionReceivedHandler);
 
