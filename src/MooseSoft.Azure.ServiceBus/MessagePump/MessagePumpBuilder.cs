@@ -4,6 +4,7 @@ using MooseSoft.Azure.ServiceBus.Abstractions;
 using MooseSoft.Azure.ServiceBus.BackOffDelayStrategy;
 using MooseSoft.Azure.ServiceBus.FailurePolicy;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MooseSoft.Azure.ServiceBus.MessagePump
@@ -11,11 +12,11 @@ namespace MooseSoft.Azure.ServiceBus.MessagePump
     internal class MessagePumpBuilder 
         : IFailurePolicyHolder, IBackDelayStrategyHolder, IMessagePumpBuilder, IMessageProcessorHolder
     {
-        private readonly MessagePumpBuilderState _builderState;
+        internal MessagePumpBuilderState BuilderState { get; }
 
         public MessagePumpBuilder(IMessageReceiver messageReceiver)
         {
-            _builderState = new MessagePumpBuilderState
+            BuilderState = new MessagePumpBuilderState
             {
                 MessageReceiver = messageReceiver
             };
@@ -43,7 +44,7 @@ namespace MooseSoft.Azure.ServiceBus.MessagePump
 
         public IMessagePumpBuilder WithFailurePolicy<T>(T failurePolicy) where T : IFailurePolicy
         {
-            _builderState.FailurePolicy = failurePolicy;
+            BuilderState.FailurePolicy = failurePolicy;
             return this;
         } 
         #endregion
@@ -51,7 +52,7 @@ namespace MooseSoft.Azure.ServiceBus.MessagePump
         #region IBackOffDelayStrategyHolder Members
         public IMessagePumpBuilder WithBackOffDelayStrategy<T>(T backOffDelayStrategy) where T : IBackOffDelayStrategy
         {
-            _builderState.BackOffDelayStrategy = backOffDelayStrategy;
+            BuilderState.BackOffDelayStrategy = backOffDelayStrategy;
             return this;
         }
 
@@ -89,8 +90,8 @@ namespace MooseSoft.Azure.ServiceBus.MessagePump
             Func<Exception, bool> shouldCompleteOnException = null)
         {
             var contextProcessor = new MessageContextProcessor(
-                _builderState.MessageProcessor,
-                _builderState.FailurePolicy ?? CreateFailurePolicy(),
+                BuilderState.MessageProcessor,
+                BuilderState.FailurePolicy ?? CreateFailurePolicy(),
                 shouldCompleteOnException);
 
             var options = new MessageHandlerOptions(exceptionHandler)
@@ -99,12 +100,12 @@ namespace MooseSoft.Azure.ServiceBus.MessagePump
                 MaxConcurrentCalls = maxConcurrentCalls
             };
 
-            _builderState.MessageReceiver.RegisterMessageHandler(
+            BuilderState.MessageReceiver.RegisterMessageHandler(
                 (message, token) => contextProcessor.ProcessMessageContextAsync(
-                    new MessageContext(message, _builderState.MessageReceiver), token),
+                    new MessageContext(message, BuilderState.MessageReceiver), token),
                 options);
 
-            return _builderState.MessageReceiver;
+            return BuilderState.MessageReceiver;
         } 
         #endregion
 
@@ -112,7 +113,7 @@ namespace MooseSoft.Azure.ServiceBus.MessagePump
         public IFailurePolicyHolder WithMessageProcessor<T>(T messageProcessor)
             where T : IMessageProcessor
         {
-            _builderState.MessageProcessor = messageProcessor;
+            BuilderState.MessageProcessor = messageProcessor;
             return this;
         }
 
@@ -124,17 +125,17 @@ namespace MooseSoft.Azure.ServiceBus.MessagePump
 
         private IFailurePolicy CreateFailurePolicy()
         {
-            return _builderState.FailurePolicyType == typeof(CloneMessageFailurePolicy)
-                ? new CloneMessageFailurePolicy(_builderState.CanHandle, _builderState.BackOffDelayStrategy)
-                : (IFailurePolicy)new DeferMessageFailurePolicy(_builderState.CanHandle, _builderState.BackOffDelayStrategy);
+            return BuilderState.FailurePolicyType == typeof(CloneMessageFailurePolicy)
+                ? new CloneMessageFailurePolicy(BuilderState.CanHandle, BuilderState.BackOffDelayStrategy)
+                : (IFailurePolicy)new DeferMessageFailurePolicy(BuilderState.CanHandle, BuilderState.BackOffDelayStrategy);
         }
 
-        private static bool DefaultCanHandle(Exception exception) => true;
+        internal static bool DefaultCanHandle(Exception exception) => true;
 
         private void SetFailurePolicyInfo(Type failurePolicyType, Func<Exception, bool> canHandle)
         {
-            _builderState.FailurePolicyType = failurePolicyType;
-            _builderState.CanHandle = canHandle ?? DefaultCanHandle;
+            BuilderState.FailurePolicyType = failurePolicyType;
+            BuilderState.CanHandle = canHandle ?? DefaultCanHandle;
         }
     }
 }
