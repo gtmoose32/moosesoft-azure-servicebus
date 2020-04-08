@@ -1,6 +1,8 @@
-﻿using Microsoft.Azure.ServiceBus;
+﻿using FluentAssertions;
+using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MooseSoft.Azure.ServiceBus.MessagePump;
 using NSubstitute;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
@@ -35,8 +37,27 @@ namespace MooseSoft.Azure.ServiceBus.Tests
             var result = await sut.GetDeferredMessageAsync(message);
 
             //Assert
+            result.Should().NotBeNull();
+            result.Should().Be(message);
             await sut.DidNotReceiveWithAnyArgs().CompleteAsync(Arg.Any<string>()).ConfigureAwait(false);
             await sut.DidNotReceiveWithAnyArgs().ReceiveDeferredMessageAsync(Arg.Any<long>()).ConfigureAwait(false);
+        }
+
+        [TestMethod]
+        public void ConfigureMessagePump_Test()
+        {
+            //Arrange
+            var sut = Substitute.For<IMessageReceiver>();
+
+            //Act
+            var result = sut.ConfigureMessagePump();
+
+            //Assert
+            result.Should().NotBeNull();
+            result.Should().BeOfType<MessagePumpBuilder>();
+            var state = (result as MessagePumpBuilder)?.BuilderState;
+            // ReSharper disable once PossibleNullReferenceException
+            state.MessageReceiver.Should().Be(sut);
         }
     }
 }
