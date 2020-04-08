@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 namespace MessagePumpConsoleSample
 {
     /// <summary>
-    /// This class should contain code custom code necessary to "process" the message received from Service Bus
+    /// Implementations of <see cref="IMessageProcessor"/> should process messages received from Service Bus.
+    /// This sample class is merely to demonstrate failure policies with back off delays.
     /// </summary>
     [ExcludeFromCodeCoverage]
     public class SampleMessageProcessor : IMessageProcessor
