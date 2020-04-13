@@ -4,7 +4,6 @@ using MooseSoft.Azure.ServiceBus.Abstractions;
 using MooseSoft.Azure.ServiceBus.BackOffDelayStrategy;
 using MooseSoft.Azure.ServiceBus.FailurePolicy;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace MooseSoft.Azure.ServiceBus.MessagePump
@@ -89,16 +88,19 @@ namespace MooseSoft.Azure.ServiceBus.MessagePump
             int maxConcurrentCalls = 10,
             Func<Exception, bool> shouldCompleteOnException = null)
         {
-            var contextProcessor = new MessageContextProcessor(
-                BuilderState.MessageProcessor,
-                BuilderState.FailurePolicy ?? CreateFailurePolicy(),
-                shouldCompleteOnException);
-
-            var options = new MessageHandlerOptions(exceptionHandler)
+            var options = new MessagePumpBuilderOptions(exceptionHandler)
             {
-                AutoComplete = false,
                 MaxConcurrentCalls = maxConcurrentCalls
             };
+
+            return BuildMessagePump(options);
+        }
+
+        public IMessageReceiver BuildMessagePump(MessagePumpBuilderOptions options)
+        {
+            if (options == null) throw new ArgumentNullException(nameof(options));
+
+            var contextProcessor = CreateMessageContextProcessor(options.ShouldCompleteOnException);
 
             BuilderState.MessageReceiver.RegisterMessageHandler(
                 (message, token) => contextProcessor.ProcessMessageContextAsync(
@@ -106,7 +108,7 @@ namespace MooseSoft.Azure.ServiceBus.MessagePump
                 options);
 
             return BuilderState.MessageReceiver;
-        } 
+        }
         #endregion
 
         #region IMessageProcessorHolder Members
@@ -122,6 +124,12 @@ namespace MooseSoft.Azure.ServiceBus.MessagePump
             return WithMessageProcessor(new T());
         }
         #endregion
+
+        private IMessageContextProcessor CreateMessageContextProcessor(Func<Exception, bool> shouldCompleteOnException = null) =>
+            new MessageContextProcessor(
+                BuilderState.MessageProcessor,
+                BuilderState.FailurePolicy ?? CreateFailurePolicy(),
+                shouldCompleteOnException);
 
         private IFailurePolicy CreateFailurePolicy()
         {
