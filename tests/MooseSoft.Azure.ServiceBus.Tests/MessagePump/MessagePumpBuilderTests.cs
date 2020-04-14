@@ -242,12 +242,35 @@ namespace MooseSoft.Azure.ServiceBus.Tests.MessagePump
             _sut.BuilderState.MessageProcessor = Substitute.For<IMessageProcessor>();
             _sut.BuilderState.FailurePolicy = Substitute.For<IFailurePolicy>();
 
+            var options = new MessagePumpBuilderOptions(args => Task.CompletedTask)
+            {
+                MaxAutoRenewDuration = TimeSpan.FromMinutes(50),
+                MaxConcurrentCalls = 10, 
+                ShouldCompleteOnException = exception => false
+            };
+
             //Act
-            var result = _sut.BuildMessagePump(args => Task.CompletedTask);
+            var result = _sut.BuildMessagePump(options);
 
             //Assert
             result.Should().NotBeNull();
             result.ReceivedWithAnyArgs()
+                .RegisterMessageHandler(Arg.Any<Func<Message, CancellationToken, Task>>(), Arg.Any<MessageHandlerOptions>());
+        }
+
+        [TestMethod]
+        public void BuildMessagePump_ArgumentNullException_Test()
+        {
+            //Arrange
+            _sut.BuilderState.MessageProcessor = Substitute.For<IMessageProcessor>();
+            _sut.BuilderState.FailurePolicy = Substitute.For<IFailurePolicy>();
+
+            //Act
+            Action act = () => _sut.BuildMessagePump(null);
+
+            //Assert
+            act.Should().ThrowExactly<ArgumentNullException>();
+            _sut.BuilderState.MessageReceiver.DidNotReceiveWithAnyArgs()
                 .RegisterMessageHandler(Arg.Any<Func<Message, CancellationToken, Task>>(), Arg.Any<MessageHandlerOptions>());
         }
 
