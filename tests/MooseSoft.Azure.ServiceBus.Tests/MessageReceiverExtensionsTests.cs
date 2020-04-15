@@ -2,7 +2,7 @@
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MooseSoft.Azure.ServiceBus.MessagePump;
+using MooseSoft.Azure.ServiceBus.Builders;
 using NSubstitute;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
@@ -55,7 +55,7 @@ namespace MooseSoft.Azure.ServiceBus.Tests
             //Assert
             result.Should().NotBeNull();
             result.Should().BeOfType<MessagePumpBuilder>();
-            var state = (result as MessagePumpBuilder)?.BuilderState;
+            var state = (result as MessagePumpBuilder)?.GetBuilderState();
             // ReSharper disable once PossibleNullReferenceException
             state.MessageReceiver.Should().Be(sut);
         }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
-using MooseSoft.Azure.ServiceBus.Abstractions;
-using MooseSoft.Azure.ServiceBus.MessagePump;
+using MooseSoft.Azure.ServiceBus.Abstractions.Builders;
+using MooseSoft.Azure.ServiceBus.Builders;
 using System.Threading.Tasks;
 using System.Transactions;
 
@@ -29,7 +29,7 @@ namespace MooseSoft.Azure.ServiceBus
         /// </summary>
         /// <param name="receiver"></param>
         /// <returns></returns>
-        public static IMessageProcessorHolder ConfigureMessagePump(this IMessageReceiver receiver)
+        public static IMessageProcessorHolder<IMessagePumpBuilder> ConfigureMessagePump(this IMessageReceiver receiver)
         {
             return new MessagePumpBuilder(receiver);
         }
