@@ -1,7 +1,10 @@
-﻿using MooseSoft.Azure.ServiceBus.BackOffDelayStrategy;
+﻿using Microsoft.Azure.ServiceBus;
+using MooseSoft.Azure.ServiceBus.BackOffDelayStrategy;
 using MooseSoft.Azure.ServiceBus.Builders;
 using MooseSoft.Azure.ServiceBus.FailurePolicy;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MooseSoft.Azure.ServiceBus.Abstractions.Builders
 {
@@ -27,6 +30,12 @@ namespace MooseSoft.Azure.ServiceBus.Abstractions.Builders
         public IFailurePolicyHolder<TBuilder> WithMessageProcessor<TProcessor>() where TProcessor : IMessageProcessor, new()
         {
             return WithMessageProcessor(new TProcessor());
+        }
+
+        public IFailurePolicyHolder<TBuilder> WithMessageProcessor(Func<Message, CancellationToken, Task> processMessage)
+        {
+            BuilderState.ProcessMessageAsync = processMessage;
+            return this;
         }
         #endregion
 
