@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace MooseSoft.Azure.ServiceBus.MessagePump
+namespace MooseSoft.Azure.ServiceBus.Builders
 {
     public class MessagePumpBuilderOptions
     {

@@ -26,7 +26,7 @@ namespace MooseSoft.Azure.ServiceBus.Builders
             throw new NotImplementedException();
         }
 
-        public IMessageReceiver Build()
+        public IMessageReceiver Build(MessagePumpBuilderOptions options = null)
         {
             throw new NotImplementedException();
         }
