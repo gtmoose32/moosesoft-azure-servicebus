@@ -1,4 +1,5 @@
-﻿using MooseSoft.Azure.ServiceBus.Abstractions;
+﻿using Microsoft.Azure.ServiceBus;
+using MooseSoft.Azure.ServiceBus.Abstractions;
 using MooseSoft.Azure.ServiceBus.FailurePolicy;
 using System;
 using System.Threading;
@@ -9,7 +10,7 @@ namespace MooseSoft.Azure.ServiceBus
     /// <inheritdoc cref="IMessageContextProcessor"/>
     public class MessageContextProcessor : IMessageContextProcessor
     {
-        private readonly IMessageProcessor _messageProcessor;
+        private readonly Func<Message, CancellationToken, Task> _processMessage;
         private readonly IFailurePolicy _failurePolicy;
         private readonly Func<Exception, bool> _shouldComplete;
         
@@ -23,8 +24,22 @@ namespace MooseSoft.Azure.ServiceBus
             IMessageProcessor messageProcessor, 
             IFailurePolicy failurePolicy = null, 
             Func<Exception, bool> shouldComplete = null)
+        : this(messageProcessor.ProcessMessageAsync, failurePolicy, shouldComplete)
         {
-            _messageProcessor = messageProcessor ?? throw new ArgumentNullException(nameof(messageProcessor));
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="processMessage"></param>
+        /// <param name="failurePolicy"></param>
+        /// <param name="shouldComplete"></param>
+        public MessageContextProcessor(
+            Func<Message, CancellationToken, Task> processMessage, 
+            IFailurePolicy failurePolicy = null,
+            Func<Exception, bool> shouldComplete = null)
+        {
+            _processMessage = processMessage ?? throw new ArgumentNullException(nameof(processMessage));
             _failurePolicy = failurePolicy ?? new AbandonMessageFailurePolicy();
             _shouldComplete = shouldComplete;
 
@@ -36,7 +51,7 @@ namespace MooseSoft.Azure.ServiceBus
             {
                 await CheckForDeferredMessageAsync(context).ConfigureAwait(false);
 
-                await _messageProcessor.ProcessMessageAsync(context.Message, cancellationToken).ConfigureAwait(false);
+                await _processMessage(context.Message, cancellationToken).ConfigureAwait(false);
 
                 await context.MessageReceiver.CompleteAsync(context.Message.SystemProperties.LockToken)
                     .ConfigureAwait(false);

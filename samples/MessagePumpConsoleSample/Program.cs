@@ -22,7 +22,7 @@ namespace MessagePumpConsoleSample
                 .WithMessageProcessor<SampleMessageProcessor>()
                 .WithCloneMessageFailurePolicy(e => e is InvalidOperationException)
                 .WithExponentialBackOffDelayStrategy()
-                .BuildMessagePump(ExceptionReceivedHandler);
+                .Build();
 
             Console.WriteLine("Press any key to terminate!");
             Console.Read();
