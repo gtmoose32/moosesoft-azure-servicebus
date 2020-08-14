@@ -17,7 +17,7 @@
     <DocumentationFile Condition="'$(Configuration)'=='Release'">bin\Release\netstandard2.0\MooseSoft.Azure.ServiceBus.xml</DocumentationFile>
     <PackageReleaseNotes>
 Changes in 2.3.0
-* Added ability provide ExponentialBackoffDelayStrategy with a custom initial delay
+* Ability to specify initial delay in ExponentialBackoffDelayStrategy
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
