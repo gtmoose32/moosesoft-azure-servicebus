@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <Version>2.2.0</Version>
+    <Version>2.2.1</Version>
     <Authors>Marty Mathis</Authors>
     <Company />
     <Description>Provides classes to facilitate advanced message processing scenarios using Microsoft Azure Service Bus, including retry with back off delay handling.</Description>
@@ -16,8 +16,9 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <DocumentationFile Condition="'$(Configuration)'=='Release'">bin\Release\netstandard2.0\MooseSoft.Azure.ServiceBus.xml</DocumentationFile>
     <PackageReleaseNotes>
-Changes in 2.2.0
-* Added method overload for IMessagePumpBuilder.BuildMessagePump to support configuring MaxAutoRenewDuration.
+Changes in 2.2.1
+* Added SourceLink
+* Updated Microsoft.Azure.ServiceBus to 4.1.3
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
