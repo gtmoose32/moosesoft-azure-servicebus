@@ -16,9 +16,8 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <DocumentationFile Condition="'$(Configuration)'=='Release'">bin\Release\netstandard2.0\MooseSoft.Azure.ServiceBus.xml</DocumentationFile>
     <PackageReleaseNotes>
-Changes in 2.2.1
-* Added SourceLink
-* Updated Microsoft.Azure.ServiceBus to 4.1.3
+Changes in 2.3.0
+* Added ability provide ExponentialBackoffDelayStrategy with a custom initial delay
     </PackageReleaseNotes>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
