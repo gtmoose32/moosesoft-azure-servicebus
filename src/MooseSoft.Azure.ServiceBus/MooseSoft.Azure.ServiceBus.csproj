@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <Version>2.2.1</Version>
+    <Version>2.3.0</Version>
     <Authors>Marty Mathis</Authors>
     <Company />
     <Description>Provides classes to facilitate advanced message processing scenarios using Microsoft Azure Service Bus, including retry with back off delay handling.</Description>
