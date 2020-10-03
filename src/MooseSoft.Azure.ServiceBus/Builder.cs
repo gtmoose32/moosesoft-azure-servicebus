@@ -1,7 +1,8 @@
 ﻿using Microsoft.Azure.ServiceBus.Core;
 using MooseSoft.Azure.ServiceBus.Abstractions.Builders;
+using MooseSoft.Azure.ServiceBus.Builders;
 
-namespace MooseSoft.Azure.ServiceBus.Builders
+namespace MooseSoft.Azure.ServiceBus
 {
     public static class Builder
     {
