@@ -1,8 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moosesoft.Azure.ServiceBus.BackOffDelayStrategy;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace Moosesoft.Azure.ServiceBus.Tests.BackOffDelayStrategy
 {
@@ -32,6 +34,42 @@ namespace Moosesoft.Azure.ServiceBus.Tests.BackOffDelayStrategy
                 else
                     Assert.IsTrue(hour == results[i]);
             }
+        }
+
+        [TestMethod]
+        [DataRow(10, new[] { 10, 40, 90, 160, 250, 360 })]
+        [DataRow(100, new[] { 100, 400, 900, 1600, 2500, 3600 })]
+        public void Calculate_CustomInitialBackoffDelaySeconds_Test(int initialDelay, int[] delays)
+        {
+            // Arrange
+            var sut = new ExponentialBackOffDelayStrategy(TimeSpan.FromHours(1), TimeSpan.FromSeconds(initialDelay));
+            var results = new List<int>();
+
+            // Act
+            for (var i = 1; i <= 6; i++)
+            {
+                results.Add((int)sut.Calculate(i).TotalSeconds);
+            }
+
+            // Assert
+            results.Should().BeEquivalentTo(delays);
+        }
+
+        [TestMethod]
+        public void Calculate_InitialDelayOfZeroUsesDefault_Test()
+        {
+            // Arrange
+            var sut = new ExponentialBackOffDelayStrategy(TimeSpan.FromHours(1), TimeSpan.Zero);
+            var results = new List<int>();
+
+            // Act
+            for (var i = 1; i <= 6; i++)
+            {
+                results.Add((int)sut.Calculate(i).TotalSeconds);
+            }
+
+            // Assert
+            results.Should().BeEquivalentTo(new[] { 100, 400, 900, 1600, 2500, 3600 });
         }
     }
 }
