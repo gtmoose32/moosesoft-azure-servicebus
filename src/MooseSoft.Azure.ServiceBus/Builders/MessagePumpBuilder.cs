@@ -1,10 +1,10 @@
 ﻿using Microsoft.Azure.ServiceBus.Core;
-using MooseSoft.Azure.ServiceBus.Abstractions;
-using MooseSoft.Azure.ServiceBus.Abstractions.Builders;
-using MooseSoft.Azure.ServiceBus.FailurePolicy;
+using Moosesoft.Azure.ServiceBus.Abstractions;
+using Moosesoft.Azure.ServiceBus.Abstractions.Builders;
+using Moosesoft.Azure.ServiceBus.FailurePolicy;
 using System;
 
-namespace MooseSoft.Azure.ServiceBus.Builders
+namespace Moosesoft.Azure.ServiceBus.Builders
 {
     internal class MessagePumpBuilder : BuilderBase<IMessagePumpBuilder>, IMessagePumpBuilder
     {

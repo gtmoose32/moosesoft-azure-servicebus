@@ -2,18 +2,18 @@
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MooseSoft.Azure.ServiceBus.Abstractions;
-using MooseSoft.Azure.ServiceBus.BackOffDelayStrategy;
-using MooseSoft.Azure.ServiceBus.Builders;
-using MooseSoft.Azure.ServiceBus.FailurePolicy;
+using Moosesoft.Azure.ServiceBus.Abstractions;
+using Moosesoft.Azure.ServiceBus.BackOffDelayStrategy;
+using Moosesoft.Azure.ServiceBus.Builders;
+using Moosesoft.Azure.ServiceBus.FailurePolicy;
 using NSubstitute;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
-using MooseSoft.Azure.ServiceBus.Tests.Support;
+using Moosesoft.Azure.ServiceBus.Tests.Support;
 
-namespace MooseSoft.Azure.ServiceBus.Tests.Builders
+namespace Moosesoft.Azure.ServiceBus.Tests.Builders
 {
     [ExcludeFromCodeCoverage]
     [TestClass]

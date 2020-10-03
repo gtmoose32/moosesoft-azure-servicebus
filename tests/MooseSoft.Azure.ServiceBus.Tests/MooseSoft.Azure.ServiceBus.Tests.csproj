@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\MooseSoft.Azure.ServiceBus\MooseSoft.Azure.ServiceBus.csproj" />
+    <ProjectReference Include="..\..\src\MooseSoft.Azure.ServiceBus\Moosesoft.Azure.ServiceBus.csproj" />
   </ItemGroup>
 
 </Project>

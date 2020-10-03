@@ -1,5 +1,5 @@
 ﻿using Microsoft.Azure.ServiceBus;
-using MooseSoft.Azure.ServiceBus.Abstractions;
+using Moosesoft.Azure.ServiceBus.Abstractions;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;

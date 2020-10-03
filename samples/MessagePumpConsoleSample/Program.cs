@@ -1,6 +1,6 @@
 ﻿using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
-using MooseSoft.Azure.ServiceBus;
+using Moosesoft.Azure.ServiceBus;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;

@@ -3,10 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <Version>2.2.0</Version>
+    <Version>3.0.0-preview1</Version>
     <Authors>Marty Mathis</Authors>
     <Company />
-    <Description>Provides classes to facilitate advanced message processing scenarios using Microsoft Azure Service Bus, including retry with back off delay handling.</Description>
+    <Description>Provides support advanced message processing scenarios using Microsoft Azure Service Bus, including retry with back off delay handling.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/gtmoose32/moosesoft-azure-servicebus</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
@@ -14,15 +14,15 @@
     <PackageTags>azure service bus retry delay backoff message receiver queue topic</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <DocumentationFile Condition="'$(Configuration)'=='Release'">bin\Release\netstandard2.0\MooseSoft.Azure.ServiceBus.xml</DocumentationFile>
+    <DocumentationFile Condition="'$(Configuration)'=='Release'">bin\Release\netstandard2.0\Moosesoft.Azure.ServiceBus.xml</DocumentationFile>
     <PackageReleaseNotes>
-Changes in 2.2.0
-* Added method overload for IMessagePumpBuilder.BuildMessagePump to support configuring MaxAutoRenewDuration.
+Changes in 3.0.0
+* 
     </PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Azure.ServiceBus" Version="4.1.2" />
+    <PackageReference Include="Microsoft.Azure.ServiceBus" Version="5.0.0" />
   </ItemGroup>
 
 </Project>

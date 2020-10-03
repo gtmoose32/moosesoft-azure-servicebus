@@ -1,7 +1,7 @@
-﻿using MooseSoft.Azure.ServiceBus.BackOffDelayStrategy;
+﻿using Moosesoft.Azure.ServiceBus.BackOffDelayStrategy;
 using System;
 
-namespace MooseSoft.Azure.ServiceBus.Abstractions.Builders
+namespace Moosesoft.Azure.ServiceBus.Abstractions.Builders
 {
     /// <summary>
     /// Provides a holding mechanism for instances of <see cref="IBackOffDelayStrategy"/> to help constructing message pumps.

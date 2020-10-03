@@ -1,12 +1,12 @@
 ﻿using Microsoft.Azure.ServiceBus;
-using MooseSoft.Azure.ServiceBus.BackOffDelayStrategy;
-using MooseSoft.Azure.ServiceBus.Builders;
-using MooseSoft.Azure.ServiceBus.FailurePolicy;
+using Moosesoft.Azure.ServiceBus.BackOffDelayStrategy;
+using Moosesoft.Azure.ServiceBus.Builders;
+using Moosesoft.Azure.ServiceBus.FailurePolicy;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MooseSoft.Azure.ServiceBus.Abstractions.Builders
+namespace Moosesoft.Azure.ServiceBus.Abstractions.Builders
 {
     internal abstract class BuilderBase<TBuilder> 
         : IMessageProcessorHolder<TBuilder>, IBackDelayStrategyHolder<TBuilder>, IFailurePolicyHolder<TBuilder>

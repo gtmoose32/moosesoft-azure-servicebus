@@ -1,11 +1,11 @@
 ﻿using Microsoft.Azure.ServiceBus;
-using MooseSoft.Azure.ServiceBus.Abstractions;
+using Moosesoft.Azure.ServiceBus.Abstractions;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace MooseSoft.Azure.ServiceBus.FailurePolicy
+namespace Moosesoft.Azure.ServiceBus.FailurePolicy
 {
     /// <summary>
     /// This failure policy will create a clone of the Service Bus Message attempting to be processed.

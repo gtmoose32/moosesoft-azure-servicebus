@@ -1,7 +1,7 @@
 ﻿using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MooseSoft.Azure.ServiceBus.Abstractions;
+using Moosesoft.Azure.ServiceBus.Abstractions;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using System;
@@ -10,7 +10,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MooseSoft.Azure.ServiceBus.Tests
+namespace Moosesoft.Azure.ServiceBus.Tests
 {
     [ExcludeFromCodeCoverage]
     [TestClass]

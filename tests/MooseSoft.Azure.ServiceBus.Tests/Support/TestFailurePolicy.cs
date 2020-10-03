@@ -1,10 +1,10 @@
-﻿using MooseSoft.Azure.ServiceBus.Abstractions;
+﻿using Moosesoft.Azure.ServiceBus.Abstractions;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MooseSoft.Azure.ServiceBus.Tests.Support
+namespace Moosesoft.Azure.ServiceBus.Tests.Support
 {
     [ExcludeFromCodeCoverage]
     public class TestFailurePolicy : IFailurePolicy

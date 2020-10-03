@@ -1,8 +1,8 @@
-﻿using MooseSoft.Azure.ServiceBus.Abstractions;
+﻿using Moosesoft.Azure.ServiceBus.Abstractions;
 using System;
 using System.Linq;
 
-namespace MooseSoft.Azure.ServiceBus.BackOffDelayStrategy
+namespace Moosesoft.Azure.ServiceBus.BackOffDelayStrategy
 {
     /// <summary>
     /// This strategy performs back off delay calculations using a exponential model.

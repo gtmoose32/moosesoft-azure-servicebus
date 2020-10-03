@@ -1,10 +1,10 @@
 ﻿using Microsoft.Azure.ServiceBus;
-using MooseSoft.Azure.ServiceBus.BackOffDelayStrategy;
+using Moosesoft.Azure.ServiceBus.BackOffDelayStrategy;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MooseSoft.Azure.ServiceBus.Abstractions
+namespace Moosesoft.Azure.ServiceBus.Abstractions
 {
     /// <inheritdoc cref="IFailurePolicy"/>>
     public abstract class FailurePolicyBase : IFailurePolicy

@@ -1,7 +1,7 @@
-﻿using MooseSoft.Azure.ServiceBus.Abstractions;
+﻿using Moosesoft.Azure.ServiceBus.Abstractions;
 using System;
 
-namespace MooseSoft.Azure.ServiceBus.BackOffDelayStrategy
+namespace Moosesoft.Azure.ServiceBus.BackOffDelayStrategy
 {
     /// <summary>
     /// This strategy provides a constant delay for every Calculate call regardless of attempt count.

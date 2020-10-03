@@ -1,10 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MooseSoft.Azure.ServiceBus.BackOffDelayStrategy;
+using Moosesoft.Azure.ServiceBus.BackOffDelayStrategy;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace MooseSoft.Azure.ServiceBus.Tests.BackOffDelayStrategy
+namespace Moosesoft.Azure.ServiceBus.Tests.BackOffDelayStrategy
 {
     [ExcludeFromCodeCoverage]
     [TestClass]

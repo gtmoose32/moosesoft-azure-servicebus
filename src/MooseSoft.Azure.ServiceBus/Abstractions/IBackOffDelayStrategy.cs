@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MooseSoft.Azure.ServiceBus.Abstractions
+namespace Moosesoft.Azure.ServiceBus.Abstractions
 {
     /// <summary>
     /// Defines a strategy for calculating back off delay for message processing retries.

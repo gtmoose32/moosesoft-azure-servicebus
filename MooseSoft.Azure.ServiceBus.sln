@@ -7,9 +7,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C14D30AB-983
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{372263FB-0C5C-4054-BF91-33BB81755756}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MooseSoft.Azure.ServiceBus", "src\MooseSoft.Azure.ServiceBus\MooseSoft.Azure.ServiceBus.csproj", "{FA824792-53BC-4256-BE94-D08070C268EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moosesoft.Azure.ServiceBus", "src\MooseSoft.Azure.ServiceBus\Moosesoft.Azure.ServiceBus.csproj", "{FA824792-53BC-4256-BE94-D08070C268EB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MooseSoft.Azure.ServiceBus.Tests", "tests\MooseSoft.Azure.ServiceBus.Tests\MooseSoft.Azure.ServiceBus.Tests.csproj", "{41FC161F-7E49-44DF-8523-EA19478257A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moosesoft.Azure.ServiceBus.Tests", "tests\MooseSoft.Azure.ServiceBus.Tests\Moosesoft.Azure.ServiceBus.Tests.csproj", "{41FC161F-7E49-44DF-8523-EA19478257A3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{F9AF4DF3-CD1A-47A3-9117-3708D2D29D73}"
 EndProject

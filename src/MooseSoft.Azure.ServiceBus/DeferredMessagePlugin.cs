@@ -2,7 +2,7 @@
 using Microsoft.Azure.ServiceBus.Core;
 using System.Threading.Tasks;
 
-namespace MooseSoft.Azure.ServiceBus
+namespace Moosesoft.Azure.ServiceBus
 {
     public class DeferredMessagePlugin : ServiceBusPlugin
     {

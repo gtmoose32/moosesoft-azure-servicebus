@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
-namespace MooseSoft.Azure.ServiceBus.Builders
+namespace Moosesoft.Azure.ServiceBus.Builders
 {
     [ExcludeFromCodeCoverage]
     public class MessagePumpBuilderOptions

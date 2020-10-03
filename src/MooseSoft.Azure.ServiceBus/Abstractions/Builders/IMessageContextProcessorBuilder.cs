@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MooseSoft.Azure.ServiceBus.Abstractions.Builders
+namespace Moosesoft.Azure.ServiceBus.Abstractions.Builders
 {
     public interface IMessageContextProcessorBuilder : IBuilder
     {

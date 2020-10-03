@@ -1,6 +1,6 @@
 # Moosesoft.Azure.Servicebus
 [![Build status](https://gtmoose.visualstudio.com/Mathis%20Home/_apis/build/status/Moosesoft.Azure.ServiceBus%20-%20CICD)](https://gtmoose.visualstudio.com/Mathis%20Home/_build/latest?definitionId=10)
-[![nuget](https://img.shields.io/nuget/v/MooseSoft.Azure.ServiceBus.svg)](https://www.nuget.org/packages/MooseSoft.Azure.ServiceBus/)
+[![nuget](https://img.shields.io/nuget/v/Moosesoft.Azure.ServiceBus.svg)](https://www.nuget.org/packages/Moosesoft.Azure.ServiceBus/)
 
 ## What is it?
 

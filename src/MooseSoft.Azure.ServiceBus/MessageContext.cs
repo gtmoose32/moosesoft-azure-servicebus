@@ -4,7 +4,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
-namespace MooseSoft.Azure.ServiceBus
+namespace Moosesoft.Azure.ServiceBus
 {
     /// <summary>
     /// 

@@ -3,7 +3,7 @@ using Microsoft.Azure.ServiceBus;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics.CodeAnalysis;
 
-namespace MooseSoft.Azure.ServiceBus.Tests
+namespace Moosesoft.Azure.ServiceBus.Tests
 {
     [ExcludeFromCodeCoverage]
     [TestClass]

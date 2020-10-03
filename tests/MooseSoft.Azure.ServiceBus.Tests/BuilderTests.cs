@@ -1,11 +1,11 @@
 ﻿using FluentAssertions;
 using Microsoft.Azure.ServiceBus.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MooseSoft.Azure.ServiceBus.Builders;
+using Moosesoft.Azure.ServiceBus.Builders;
 using NSubstitute;
 using System.Diagnostics.CodeAnalysis;
 
-namespace MooseSoft.Azure.ServiceBus.Tests
+namespace Moosesoft.Azure.ServiceBus.Tests
 {
     [ExcludeFromCodeCoverage]
     [TestClass]

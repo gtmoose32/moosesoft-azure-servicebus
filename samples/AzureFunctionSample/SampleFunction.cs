@@ -2,10 +2,10 @@ using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
-using MooseSoft.Azure.ServiceBus;
-using MooseSoft.Azure.ServiceBus.Abstractions;
-using MooseSoft.Azure.ServiceBus.BackOffDelayStrategy;
-using MooseSoft.Azure.ServiceBus.FailurePolicy;
+using Moosesoft.Azure.ServiceBus;
+using Moosesoft.Azure.ServiceBus.Abstractions;
+using Moosesoft.Azure.ServiceBus.BackOffDelayStrategy;
+using Moosesoft.Azure.ServiceBus.FailurePolicy;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 

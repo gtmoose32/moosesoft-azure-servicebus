@@ -1,8 +1,8 @@
 ﻿using Microsoft.Azure.ServiceBus.Core;
-using MooseSoft.Azure.ServiceBus.Abstractions;
+using Moosesoft.Azure.ServiceBus.Abstractions;
 using System;
 
-namespace MooseSoft.Azure.ServiceBus.Builders
+namespace Moosesoft.Azure.ServiceBus.Builders
 {
     internal class BuilderState
     {

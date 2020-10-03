@@ -1,11 +1,11 @@
 ﻿using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
-using MooseSoft.Azure.ServiceBus.Abstractions.Builders;
-using MooseSoft.Azure.ServiceBus.Builders;
+using Moosesoft.Azure.ServiceBus.Abstractions.Builders;
+using Moosesoft.Azure.ServiceBus.Builders;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace MooseSoft.Azure.ServiceBus
+namespace Moosesoft.Azure.ServiceBus
 {
     /// <summary>
     /// Class that defines extension methods for Azure Service Bus <see cref="IMessageReceiver"/>

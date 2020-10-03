@@ -1,7 +1,7 @@
 ﻿using Microsoft.Azure.ServiceBus.Core;
-using MooseSoft.Azure.ServiceBus.Builders;
+using Moosesoft.Azure.ServiceBus.Builders;
 
-namespace MooseSoft.Azure.ServiceBus.Abstractions.Builders
+namespace Moosesoft.Azure.ServiceBus.Abstractions.Builders
 {
     public interface IMessagePumpBuilder : IBuilder
     {

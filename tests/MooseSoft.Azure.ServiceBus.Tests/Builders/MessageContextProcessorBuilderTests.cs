@@ -1,13 +1,13 @@
 ﻿using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MooseSoft.Azure.ServiceBus.Abstractions;
-using MooseSoft.Azure.ServiceBus.Builders;
-using MooseSoft.Azure.ServiceBus.FailurePolicy;
-using MooseSoft.Azure.ServiceBus.Tests.Support;
+using Moosesoft.Azure.ServiceBus.Abstractions;
+using Moosesoft.Azure.ServiceBus.Builders;
+using Moosesoft.Azure.ServiceBus.FailurePolicy;
+using Moosesoft.Azure.ServiceBus.Tests.Support;
 using NSubstitute;
 using System.Diagnostics.CodeAnalysis;
 
-namespace MooseSoft.Azure.ServiceBus.Tests.Builders
+namespace Moosesoft.Azure.ServiceBus.Tests.Builders
 {
     [ExcludeFromCodeCoverage]
     [TestClass]

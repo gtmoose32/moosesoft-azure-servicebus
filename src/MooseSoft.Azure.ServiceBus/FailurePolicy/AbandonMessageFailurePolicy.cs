@@ -1,8 +1,8 @@
-﻿using MooseSoft.Azure.ServiceBus.Abstractions;
+﻿using Moosesoft.Azure.ServiceBus.Abstractions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MooseSoft.Azure.ServiceBus.FailurePolicy
+namespace Moosesoft.Azure.ServiceBus.FailurePolicy
 {
     /// <summary>
     /// This failure policy will abandon the message for any exceptions that occur without any back off delay.
