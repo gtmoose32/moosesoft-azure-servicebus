@@ -11,8 +11,9 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
+using MooseSoft.Azure.ServiceBus.Tests.Support;
 
-namespace MooseSoft.Azure.ServiceBus.Tests.MessagePump
+namespace MooseSoft.Azure.ServiceBus.Tests.Builders
 {
     [ExcludeFromCodeCoverage]
     [TestClass]
@@ -43,6 +44,23 @@ namespace MooseSoft.Azure.ServiceBus.Tests.MessagePump
             // ReSharper disable once PossibleNullReferenceException
             state.MessageProcessor.Should().NotBeNull();
             state.MessageProcessor.Should().BeOfType<TestMessageProcessor>();
+        }
+
+        [TestMethod]
+        public void WithMessageProcessor_Func_Test()
+        {
+            //Arrange
+
+            //Act
+            var result = _sut.WithMessageProcessor((message, token) => Task.CompletedTask);
+
+            //Assert
+            result.Should().NotBeNull();
+            var state = (result as MessagePumpBuilder)?.GetBuilderState();
+            state.Should().NotBeNull();
+            // ReSharper disable once PossibleNullReferenceException
+            state.MessageProcessor.Should().NotBeNull();
+            state.MessageProcessor.Should().BeOfType<DefaultMessageProcessor>();
         }
 
         [TestMethod]
@@ -98,6 +116,24 @@ namespace MooseSoft.Azure.ServiceBus.Tests.MessagePump
             // ReSharper disable once PossibleNullReferenceException
             state.FailurePolicyType.Should().BeNull();
             state.FailurePolicy.Should().BeOfType<AbandonMessageFailurePolicy>();
+            state.CanHandle.Should().BeNull();
+        }
+
+        [TestMethod]
+        public void WithFailurePolicy_Test()
+        {
+            //Arrange
+
+            //Act
+            var result = _sut.WithFailurePolicy(new TestFailurePolicy());
+
+            //Assert
+            result.Should().NotBeNull();
+            var state = (result as MessagePumpBuilder)?.GetBuilderState();
+            state.Should().NotBeNull();
+            // ReSharper disable once PossibleNullReferenceException
+            state.FailurePolicyType.Should().BeNull();
+            state.FailurePolicy.Should().BeOfType<TestFailurePolicy>();
             state.CanHandle.Should().BeNull();
         }
 
@@ -266,22 +302,6 @@ namespace MooseSoft.Azure.ServiceBus.Tests.MessagePump
             result.Should().NotBeNull();
             result.ReceivedWithAnyArgs()
                 .RegisterMessageHandler(Arg.Any<Func<Message, CancellationToken, Task>>(), Arg.Any<MessageHandlerOptions>());
-        }
-
-        class TestMessageProcessor : IMessageProcessor
-        {
-            public Task ProcessMessageAsync(Message message, CancellationToken cancellationToken)
-            {
-                return Task.CompletedTask;
-            }
-        }
-
-        class TestBackOffDelayStrategy : IBackOffDelayStrategy
-        {
-            public TimeSpan Calculate(int attempts)
-            {
-                return TimeSpan.Zero;
-            }
         }
     }
 }

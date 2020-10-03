@@ -1,10 +1,12 @@
 ﻿using Microsoft.Azure.ServiceBus.Core;
+using MooseSoft.Azure.ServiceBus.Abstractions;
 using MooseSoft.Azure.ServiceBus.Abstractions.Builders;
+using MooseSoft.Azure.ServiceBus.FailurePolicy;
 using System;
 
 namespace MooseSoft.Azure.ServiceBus.Builders
 {
-    public class MessagePumpBuilder : BuilderBase<IMessagePumpBuilder>, IMessagePumpBuilder
+    internal class MessagePumpBuilder : BuilderBase<IMessagePumpBuilder>, IMessagePumpBuilder
     {
         public MessagePumpBuilder(IMessageReceiver receiver)
         {
@@ -13,22 +15,37 @@ namespace MooseSoft.Azure.ServiceBus.Builders
 
         public override IMessagePumpBuilder WithBackOffDelayStrategy<TStrategy>(TStrategy backOffDelayStrategy)
         {
-            throw new NotImplementedException();
+            BuilderState.BackOffDelayStrategy = backOffDelayStrategy;
+            return this;
         }
 
         public override IMessagePumpBuilder WithAbandonMessageFailurePolicy()
         {
-            throw new NotImplementedException();
+            BuilderState.FailurePolicy = new AbandonMessageFailurePolicy();
+            return this;
         }
 
         public override IMessagePumpBuilder WithFailurePolicy<TFailurePolicy>(TFailurePolicy failurePolicy)
         {
-            throw new NotImplementedException();
+            BuilderState.FailurePolicy = failurePolicy;
+            return this;
         }
 
         public IMessageReceiver Build(MessagePumpBuilderOptions options = null)
         {
-            throw new NotImplementedException();
+            var contextProcessor = CreateMessageContextProcessor(options?.ShouldCompleteOnException);
+
+            BuilderState.MessageReceiver.RegisterMessageHandler((message, token) => 
+                    contextProcessor.ProcessMessageContextAsync(new MessageContext(message, BuilderState.MessageReceiver), token),
+                options);
+
+            return BuilderState.MessageReceiver;
         }
+
+        private IMessageContextProcessor CreateMessageContextProcessor(Func<Exception, bool> shouldCompleteOnException = null) =>
+            new MessageContextProcessor(
+                BuilderState.MessageProcessor,
+                BuilderState.FailurePolicy ?? CreateFailurePolicy(),
+                shouldCompleteOnException);
     }
 }

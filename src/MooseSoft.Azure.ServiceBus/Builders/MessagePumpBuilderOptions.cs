@@ -1,9 +1,11 @@
 ﻿using Microsoft.Azure.ServiceBus;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 namespace MooseSoft.Azure.ServiceBus.Builders
 {
+    [ExcludeFromCodeCoverage]
     public class MessagePumpBuilderOptions
     {
         public MessagePumpBuilderOptions(Func<ExceptionReceivedEventArgs, Task> exceptionReceivedHandler)
@@ -18,17 +20,16 @@ namespace MooseSoft.Azure.ServiceBus.Builders
 
         public TimeSpan MaxAutoRenewDuration { get; set; } = TimeSpan.FromMinutes(5);
 
-        public Func<Exception, bool> ShouldCompleteOnException { get; set; } 
+        public Func<Exception, bool> ShouldCompleteOnException { get; set; }
 
         public static implicit operator MessageHandlerOptions(MessagePumpBuilderOptions options) =>
             options == null
-                ? null
+                ? new MessageHandlerOptions(args => Task.CompletedTask) { AutoComplete = false }
                 : new MessageHandlerOptions(options.ExceptionReceivedHandler)
-                    {
-                        AutoComplete = false,
-                        MaxConcurrentCalls = options.MaxConcurrentCalls,
-                        MaxAutoRenewDuration = options.MaxAutoRenewDuration
-                    };
-
+                {
+                    AutoComplete = false,
+                    MaxConcurrentCalls = options.MaxConcurrentCalls,
+                    MaxAutoRenewDuration = options.MaxAutoRenewDuration
+                };
     }
 }
