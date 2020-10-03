@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MooseSoft.Azure.ServiceBus.Abstractions.Builders
 {
-    public abstract class BuilderBase<TBuilder> 
+    internal abstract class BuilderBase<TBuilder> 
         : IMessageProcessorHolder<TBuilder>, IBackDelayStrategyHolder<TBuilder>, IFailurePolicyHolder<TBuilder>
         where TBuilder : IBuilder
     {
@@ -34,7 +34,7 @@ namespace MooseSoft.Azure.ServiceBus.Abstractions.Builders
 
         public IFailurePolicyHolder<TBuilder> WithMessageProcessor(Func<Message, CancellationToken, Task> processMessage)
         {
-            BuilderState.ProcessMessageAsync = processMessage;
+            BuilderState.MessageProcessor = new DefaultMessageProcessor(processMessage);
             return this;
         }
         #endregion
