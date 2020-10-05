@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <LangVersion>latest</LangVersion>
-    <Version>3.0.0-preview1</Version>
+    <Version>3.0.0</Version>
     <Authors>Marty Mathis</Authors>
     <Company />
-    <Description>Provides support advanced message processing scenarios using Microsoft Azure Service Bus, including retry with back off delay handling.</Description>
+    <Description>Provides support for advanced message processing scenarios using Microsoft Azure Service Bus, including retry with back off delay handling through failure policies.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/gtmoose32/moosesoft-azure-servicebus</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
@@ -14,15 +14,27 @@
     <PackageTags>azure service bus retry delay backoff message receiver queue topic</PackageTags>
     <NeutralLanguage>en-US</NeutralLanguage>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <DocumentationFile Condition="'$(Configuration)'=='Release'">bin\Release\netstandard2.0\Moosesoft.Azure.ServiceBus.xml</DocumentationFile>
+    <DocumentationFile Condition="'$(Configuration)'=='Release'">bin\Release\netstandard2.1\Moosesoft.Azure.ServiceBus.xml</DocumentationFile>
     <PackageReleaseNotes>
 Changes in 3.0.0
-* 
+* BREAKING: Modified all files and namespaces that to use 'Moosesoft' instead of 'MooseSoft'
+* BREAKING: MessageContextProcessor is now an internal class.  Builder should be used to create instances now.
+* Updated to latest Microsoft.Azure.ServiceBus v5.0.0
     </PackageReleaseNotes>
+
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TF_BUILD)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.ServiceBus" Version="5.0.0" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 
 </Project>
