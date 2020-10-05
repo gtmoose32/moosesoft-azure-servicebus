@@ -4,22 +4,21 @@ using Moosesoft.Azure.ServiceBus.Builders;
 
 namespace Moosesoft.Azure.ServiceBus
 {
+    /// <summary>
+    /// Builder used to create MessageContextProcessors and MessagePumps for Azure Service Bus
+    /// </summary>
     public static class Builder
     {
-        public static class MessageContextProcessor
-        {
-            public static IMessageProcessorHolder<IMessageContextProcessorBuilder> Configure()
-            {
-                return new MessageContextProcessorBuilder();
-            }
-        }
+        /// <summary>
+        /// Builder class used to build MessageContextProcessor instances for applying Azure Service Bus failure policies.
+        /// </summary>
+        public static IMessageProcessorHolder<IMessageContextProcessorBuilder> ConfigureMessageContextProcessor()
+            => new MessageContextProcessorBuilder();
 
-        public static class MessagePump
-        {
-            public static IMessageProcessorHolder<IMessagePumpBuilder> Configure(IMessageReceiver messageReceiver)
-            {
-                return new MessagePumpBuilder(messageReceiver);
-            }
-        }
+        /// <summary>
+        /// Builder class used to build MessagePumps for processing messages while applying Azure Service Bus failure policies.
+        /// </summary>
+        public static IMessageProcessorHolder<IMessagePumpBuilder> ConfigureMessagePump(IMessageReceiver messageReceiver)
+            => new MessagePumpBuilder(messageReceiver);
     }
 }

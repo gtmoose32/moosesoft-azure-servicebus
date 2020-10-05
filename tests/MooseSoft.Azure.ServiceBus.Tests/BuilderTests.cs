@@ -15,7 +15,7 @@ namespace Moosesoft.Azure.ServiceBus.Tests
         public void MessageContextProcessor_Configure_Test()
         {
             //Act
-            var result = Builder.MessageContextProcessor.Configure();
+            var result = Builder.ConfigureMessageContextProcessor();
 
             //Assert
             result.Should().NotBeNull();
@@ -26,7 +26,7 @@ namespace Moosesoft.Azure.ServiceBus.Tests
         public void MessagePump_Configure_Test()
         {
             //Act
-            var result = Builder.MessagePump.Configure(Substitute.For<IMessageReceiver>());
+            var result = Builder.ConfigureMessagePump(Substitute.For<IMessageReceiver>());
 
             //Assert
             result.Should().NotBeNull();

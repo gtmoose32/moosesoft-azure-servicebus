@@ -13,8 +13,7 @@ namespace AzureFunctionSample
         public override void Configure(IFunctionsHostBuilder builder)
         {
             builder.Services.AddSingleton(
-                Builder.MessageContextProcessor
-                    .Configure()
+                Builder.ConfigureMessageContextProcessor()
                     .WithMessageProcessor<SampleMessageProcessor>()
                     .WithCloneMessageFailurePolicy()
                     .WithExponentialBackOffDelayStrategy()
