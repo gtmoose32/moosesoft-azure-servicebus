@@ -13,14 +13,16 @@ namespace Moosesoft.Azure.ServiceBus.FailurePolicy
     /// </summary>
     public class DeferMessageFailurePolicy : FailurePolicyBase
     {
+        /// <inheritdoc />
         public DeferMessageFailurePolicy(
             Func<Exception, bool> canHandle, 
             IBackOffDelayStrategy backOffDelayStrategy = null,
             int maxDeliveryCount = 10) 
             : base(canHandle, backOffDelayStrategy, maxDeliveryCount)
         {
-        } 
+        }
 
+        /// <inheritdoc />
         public override async Task HandleFailureAsync(MessageContext context, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();

@@ -21,6 +21,12 @@ namespace Moosesoft.Azure.ServiceBus.Abstractions
 
         private readonly Func<Exception, bool> _canHandle;
 
+        /// <summary>
+        /// Initialize a new instance <see cref="IFailurePolicy"/>.
+        /// </summary>
+        /// <param name="canHandle">Function that determines if the exception that has occurred <see cref="IFailurePolicy"/> will be applied to it.</param>
+        /// <param name="backOffDelayStrategy"><see cref="IBackOffDelayStrategy"/> to use when <see cref="IFailurePolicy"/> is applied.</param>
+        /// <param name="maxDeliveryCount">Maximum number of message delivery counts from Azure Service Bus.</param>
         protected FailurePolicyBase(Func<Exception, bool> canHandle, IBackOffDelayStrategy backOffDelayStrategy = null, int maxDeliveryCount = 10)
         {
             _canHandle = canHandle ?? throw new ArgumentNullException(nameof(canHandle));
@@ -28,8 +34,10 @@ namespace Moosesoft.Azure.ServiceBus.Abstractions
             MaxDeliveryCount = maxDeliveryCount >= 0 ? maxDeliveryCount : 10;
         }
 
+        /// <inheritdoc />
         public bool CanHandle(Exception exception) => _canHandle(exception);
 
+        /// <inheritdoc />
         public abstract Task HandleFailureAsync(MessageContext context, CancellationToken cancellationToken);
 
         /// <summary>

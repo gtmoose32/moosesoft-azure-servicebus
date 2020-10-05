@@ -10,6 +10,10 @@ namespace Moosesoft.Azure.ServiceBus.BackOffDelayStrategy
     {
         private readonly TimeSpan _initialDelay;
 
+        /// <summary>
+        /// Initialize a new instance <see cref="LinearBackOffDelayStrategy"/>.
+        /// </summary>
+        /// <param name="initialDelay"></param>
         public LinearBackOffDelayStrategy(TimeSpan initialDelay)
         {
             _initialDelay = initialDelay;
