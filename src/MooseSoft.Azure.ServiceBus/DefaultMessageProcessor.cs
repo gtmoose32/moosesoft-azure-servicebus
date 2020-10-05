@@ -12,7 +12,7 @@ namespace Moosesoft.Azure.ServiceBus
 
         public DefaultMessageProcessor(Func<Message, CancellationToken, Task> processMessage)
         {
-            _processMessage = processMessage;
+            _processMessage = processMessage ?? throw new ArgumentNullException(nameof(processMessage));
         }
 
         public Task ProcessMessageAsync(Message message, CancellationToken cancellationToken) =>

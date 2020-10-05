@@ -23,7 +23,7 @@ namespace Moosesoft.Azure.ServiceBus.Abstractions.Builders
         public IFailurePolicyHolder<TBuilder> WithMessageProcessor<TProcessor>(TProcessor messageProcessor)
             where TProcessor : IMessageProcessor
         {
-            BuilderState.MessageProcessor = messageProcessor;
+            BuilderState.MessageProcessor = messageProcessor ?? throw new ArgumentNullException(nameof(messageProcessor));
             return this;
         }
 
