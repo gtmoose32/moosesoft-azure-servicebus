@@ -90,12 +90,16 @@ namespace Moosesoft.Azure.ServiceBus.Abstractions.Builders
             where TFailurePolicy : IFailurePolicy;
         #endregion
 
-        protected IFailurePolicy CreateFailurePolicy()
-        {
-            return BuilderState.FailurePolicyType == typeof(CloneMessageFailurePolicy)
+        protected IFailurePolicy CreateFailurePolicy() =>
+            BuilderState.FailurePolicyType == typeof(CloneMessageFailurePolicy)
                 ? new CloneMessageFailurePolicy(BuilderState.CanHandle, BuilderState.BackOffDelayStrategy)
                 : (IFailurePolicy)new DeferMessageFailurePolicy(BuilderState.CanHandle, BuilderState.BackOffDelayStrategy);
-        }
+
+        protected IMessageContextProcessor CreateMessageContextProcessor(Func<Exception, bool> shouldCompleteOnException = null) =>
+            new MessageContextProcessor(
+                BuilderState.MessageProcessor,
+                BuilderState.FailurePolicy ?? CreateFailurePolicy(),
+                shouldCompleteOnException);
 
         internal static bool DefaultCanHandle(Exception exception) => true;
 

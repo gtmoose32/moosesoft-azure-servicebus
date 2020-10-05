@@ -25,10 +25,7 @@ namespace Moosesoft.Azure.ServiceBus.Builders
             return this;
         }
 
-        public IMessageContextProcessor Build(Func<Exception, bool> shouldCompleteOn = null) => 
-            new MessageContextProcessor(
-                BuilderState.MessageProcessor, 
-                BuilderState.FailurePolicy ??  CreateFailurePolicy(), 
-                shouldCompleteOn);
+        public IMessageContextProcessor Build(Func<Exception, bool> shouldCompleteOn = null) =>
+            CreateMessageContextProcessor(shouldCompleteOn);
     }
 }

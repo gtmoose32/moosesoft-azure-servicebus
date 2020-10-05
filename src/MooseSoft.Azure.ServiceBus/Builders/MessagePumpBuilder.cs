@@ -1,8 +1,6 @@
 ﻿using Microsoft.Azure.ServiceBus.Core;
-using Moosesoft.Azure.ServiceBus.Abstractions;
 using Moosesoft.Azure.ServiceBus.Abstractions.Builders;
 using Moosesoft.Azure.ServiceBus.FailurePolicy;
-using System;
 
 namespace Moosesoft.Azure.ServiceBus.Builders
 {
@@ -41,11 +39,5 @@ namespace Moosesoft.Azure.ServiceBus.Builders
 
             return BuilderState.MessageReceiver;
         }
-
-        private IMessageContextProcessor CreateMessageContextProcessor(Func<Exception, bool> shouldCompleteOnException = null) =>
-            new MessageContextProcessor(
-                BuilderState.MessageProcessor,
-                BuilderState.FailurePolicy ?? CreateFailurePolicy(),
-                shouldCompleteOnException);
     }
 }
