@@ -13,14 +13,14 @@ namespace Moosesoft.Azure.ServiceBus.Abstractions.Builders
         /// Sets the instance of <see cref="IFailurePolicy"/> to <see cref="CloneMessageFailurePolicy"/> for the message pump builder to use.
         /// </summary>
         /// <param name="canHandle">Function providing <see cref="bool"/> for which exceptions should be handled by the <see cref="IFailurePolicy"/>.</param>
-        /// <returns><see cref="IBackDelayStrategyHolder"/></returns>
+        /// <returns><see cref="IBackDelayStrategyHolder{TBuilder}"/></returns>
         IBackDelayStrategyHolder<TBuilder> WithCloneMessageFailurePolicy(Func<Exception, bool> canHandle = null);
 
         /// <summary>
         /// Sets the instance of <see cref="IFailurePolicy"/> to <see cref="DeferMessageFailurePolicy"/> for the message pump builder to use.
         /// </summary>
         /// <param name="canHandle">Function providing <see cref="bool"/> for which exceptions should be handled by the <see cref="IFailurePolicy"/>.</param>
-        /// <returns><see cref="IBackDelayStrategyHolder"/></returns>
+        /// <returns><see cref="IBackDelayStrategyHolder{TBuilder}"/></returns>
         IBackDelayStrategyHolder<TBuilder> WithDeferMessageFailurePolicy(Func<Exception, bool> canHandle = null);
 
         /// <summary>

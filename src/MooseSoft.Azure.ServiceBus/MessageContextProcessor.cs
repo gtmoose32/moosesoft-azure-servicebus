@@ -7,19 +7,12 @@ using System.Threading.Tasks;
 
 namespace Moosesoft.Azure.ServiceBus
 {
-    /// <inheritdoc cref="IMessageContextProcessor"/>
-    public class MessageContextProcessor : IMessageContextProcessor
+    internal class MessageContextProcessor : IMessageContextProcessor
     {
         private readonly IFailurePolicy _failurePolicy;
         private readonly IMessageProcessor _messageProcessor;
         private readonly Func<Exception, bool> _shouldComplete;
         
-        /// <summary>
-        /// Creates a new instance of <see cref="MessageContextProcessor"/>
-        /// </summary>
-        /// <param name="messageProcessor">The object that will process the incoming message.</param>
-        /// <param name="failurePolicy">Failure policy that will potentially be applied to any message processing failures.</param>
-        /// <param name="shouldComplete">Function that determines whether the message should be completed on certain exception(s).</param>
         public MessageContextProcessor(
             IMessageProcessor messageProcessor, 
             IFailurePolicy failurePolicy = null, 
@@ -30,12 +23,6 @@ namespace Moosesoft.Azure.ServiceBus
             _shouldComplete = shouldComplete;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="processMessage"></param>
-        /// <param name="failurePolicy"></param>
-        /// <param name="shouldComplete"></param>
         public MessageContextProcessor(
             Func<Message, CancellationToken, Task> processMessage, 
             IFailurePolicy failurePolicy = null,
