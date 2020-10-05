@@ -1,6 +1,7 @@
 ﻿using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using Moosesoft.Azure.ServiceBus;
+using Moosesoft.Azure.ServiceBus.Builders;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 namespace MessagePumpConsoleSample
 {
     [ExcludeFromCodeCoverage]
-    class Program
+    internal class Program
     {
         static void Main()
         {
@@ -17,12 +18,19 @@ namespace MessagePumpConsoleSample
             //Replace entity path with path to real entity on your ServiceBus namespace
             var receiver = new MessageReceiver(connection, "test");
 
+            //Create message pump options
+            var options = new MessagePumpBuilderOptions(ExceptionReceivedHandler)
+            {
+                MaxConcurrentCalls = 10, 
+                ShouldCompleteOnException = ex => ex is InvalidOperationException
+            };
+
             //Setup message pump with failure policy and back off delay strategy.
             receiver.ConfigureMessagePump()
                 .WithMessageProcessor<SampleMessageProcessor>()
                 .WithCloneMessageFailurePolicy(e => e is InvalidOperationException)
                 .WithExponentialBackOffDelayStrategy()
-                .Build();
+                .Build(options);
 
             Console.WriteLine("Press any key to terminate!");
             Console.Read();
@@ -30,7 +38,7 @@ namespace MessagePumpConsoleSample
 
         private static Task ExceptionReceivedHandler(ExceptionReceivedEventArgs arg)
         {
-            //Handle any exception that might bubble up from the message pump however this shouldn't really happen 
+            //Handle or log any exceptions that might bubble up from the message pump.
             return Task.CompletedTask;
         }
     }
