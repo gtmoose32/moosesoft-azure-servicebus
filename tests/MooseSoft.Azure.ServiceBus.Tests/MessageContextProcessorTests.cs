@@ -2,6 +2,7 @@
 using Microsoft.Azure.ServiceBus.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moosesoft.Azure.ServiceBus.Abstractions;
+using Moosesoft.Azure.ServiceBus.Tests.Support;
 using NSubstitute;
 using NSubstitute.ExceptionExtensions;
 using System;

@@ -2,7 +2,7 @@
 using Microsoft.Azure.ServiceBus.Core;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Moosesoft.Azure.ServiceBus.Tests
+namespace Moosesoft.Azure.ServiceBus.Tests.Support
 {
     [ExcludeFromCodeCoverage]
     public class TestMessageContext : MessageContext
