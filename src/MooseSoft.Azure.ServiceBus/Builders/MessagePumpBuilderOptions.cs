@@ -1,11 +1,9 @@
 ﻿using Microsoft.Azure.ServiceBus;
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 namespace Moosesoft.Azure.ServiceBus.Builders
 {
-    [ExcludeFromCodeCoverage]
     public class MessagePumpBuilderOptions
     {
         public MessagePumpBuilderOptions(Func<ExceptionReceivedEventArgs, Task> exceptionReceivedHandler)
