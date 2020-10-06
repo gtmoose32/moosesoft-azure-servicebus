@@ -2,6 +2,7 @@
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Moosesoft.Azure.ServiceBus;
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: FunctionsStartup(typeof(Startup))]
@@ -15,9 +16,9 @@ namespace AzureFunctionSample
             builder.Services.AddSingleton(
                 Builder.ConfigureMessageContextProcessor()
                     .WithMessageProcessor<SampleMessageProcessor>()
-                    .WithCloneMessageFailurePolicy()
+                    .WithCloneMessageFailurePolicy(ex => ex is InvalidOperationException)
                     .WithExponentialBackOffDelayStrategy()
-                    .Build());
+                    .Build(ex => ex is ArgumentOutOfRangeException));
         }
     }
 }

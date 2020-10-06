@@ -14,9 +14,24 @@ namespace MessagePumpConsoleSample
     [ExcludeFromCodeCoverage]
     public class SampleMessageProcessor : IMessageProcessor
     {
+        private readonly Random _random;
+
+        public SampleMessageProcessor()
+        {
+            _random = new Random();
+        }
+
         public Task ProcessMessageAsync(Message message, CancellationToken cancellationToken)
         {
-            throw new InvalidOperationException("Test failure policy with back off delay strategy.");
+            var num = _random.Next(0, 10);
+            if (num == 0) // throw an out of range exception to demonstrate should complete on.
+                throw new ArgumentOutOfRangeException(nameof(num));
+
+            //throw exception to demonstrate failure policy on even numbers
+            if (num % 2 != 0)
+                throw new InvalidOperationException("Test failure policy with back off delay strategy.");
+
+            return Task.CompletedTask; //complete on odd non-zero numbers
         }
     }
 }

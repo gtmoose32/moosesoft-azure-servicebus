@@ -21,8 +21,8 @@ namespace MessagePumpConsoleSample
             //Create message pump options
             var options = new MessagePumpBuilderOptions(ExceptionReceivedHandler)
             {
-                MaxConcurrentCalls = 10, 
-                ShouldCompleteOnException = ex => ex is InvalidOperationException
+                MaxConcurrentCalls = 10,
+                ShouldCompleteOnException = ex => ex is ArgumentOutOfRangeException
             };
 
             //Setup message pump with failure policy and back off delay strategy.
