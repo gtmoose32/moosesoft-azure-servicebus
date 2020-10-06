@@ -18,8 +18,11 @@
     <PackageReleaseNotes>
 Changes in 3.0.0
 * BREAKING: Modified all files and namespaces that to use 'Moosesoft' instead of 'MooseSoft'
+* BREAKING: Builder related abstractions moved to Builders folder.
+* BREAKING: IMessagePumpBuilder BuildMessagePump method renamed to Build instead.
 * BREAKING: MessageContextProcessor is now an internal class.  Builder should be used to create instances now.
 * Updated to latest Microsoft.Azure.ServiceBus v5.0.0
+* Added static Builder class for building message pumps and IMessageContextProcessor instances.
     </PackageReleaseNotes>
 
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
