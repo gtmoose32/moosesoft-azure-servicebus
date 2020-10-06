@@ -2,17 +2,18 @@
 using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MooseSoft.Azure.ServiceBus.Abstractions;
-using MooseSoft.Azure.ServiceBus.BackOffDelayStrategy;
-using MooseSoft.Azure.ServiceBus.FailurePolicy;
-using MooseSoft.Azure.ServiceBus.MessagePump;
+using Moosesoft.Azure.ServiceBus.Abstractions;
+using Moosesoft.Azure.ServiceBus.BackOffDelayStrategy;
+using Moosesoft.Azure.ServiceBus.Builders;
+using Moosesoft.Azure.ServiceBus.FailurePolicy;
 using NSubstitute;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
+using Moosesoft.Azure.ServiceBus.Tests.Support;
 
-namespace MooseSoft.Azure.ServiceBus.Tests.MessagePump
+namespace Moosesoft.Azure.ServiceBus.Tests.Builders
 {
     [ExcludeFromCodeCoverage]
     [TestClass]
@@ -38,11 +39,28 @@ namespace MooseSoft.Azure.ServiceBus.Tests.MessagePump
 
             //Assert
             result.Should().NotBeNull();
-            var state = (result as MessagePumpBuilder)?.BuilderState;
+            var state = (result as MessagePumpBuilder)?.GetBuilderState();
             state.Should().NotBeNull();
             // ReSharper disable once PossibleNullReferenceException
             state.MessageProcessor.Should().NotBeNull();
             state.MessageProcessor.Should().BeOfType<TestMessageProcessor>();
+        }
+
+        [TestMethod]
+        public void WithMessageProcessor_Func_Test()
+        {
+            //Arrange
+
+            //Act
+            var result = _sut.WithMessageProcessor((message, token) => Task.CompletedTask);
+
+            //Assert
+            result.Should().NotBeNull();
+            var state = (result as MessagePumpBuilder)?.GetBuilderState();
+            state.Should().NotBeNull();
+            // ReSharper disable once PossibleNullReferenceException
+            state.MessageProcessor.Should().NotBeNull();
+            state.MessageProcessor.Should().BeOfType<DefaultMessageProcessor>();
         }
 
         [TestMethod]
@@ -55,7 +73,7 @@ namespace MooseSoft.Azure.ServiceBus.Tests.MessagePump
 
             //Assert
             result.Should().NotBeNull();
-            var state = (result as MessagePumpBuilder)?.BuilderState;
+            var state = (result as MessagePumpBuilder)?.GetBuilderState();
             state.Should().NotBeNull();
             // ReSharper disable once PossibleNullReferenceException
             state.FailurePolicy.Should().BeNull();
@@ -74,7 +92,7 @@ namespace MooseSoft.Azure.ServiceBus.Tests.MessagePump
 
             //Assert
             result.Should().NotBeNull();
-            var state = (result as MessagePumpBuilder)?.BuilderState;
+            var state = (result as MessagePumpBuilder)?.GetBuilderState();
             state.Should().NotBeNull();
             // ReSharper disable once PossibleNullReferenceException
             state.FailurePolicy.Should().BeNull();
@@ -93,11 +111,29 @@ namespace MooseSoft.Azure.ServiceBus.Tests.MessagePump
 
             //Assert
             result.Should().NotBeNull();
-            var state = (result as MessagePumpBuilder)?.BuilderState;
+            var state = (result as MessagePumpBuilder)?.GetBuilderState();
             state.Should().NotBeNull();
             // ReSharper disable once PossibleNullReferenceException
             state.FailurePolicyType.Should().BeNull();
             state.FailurePolicy.Should().BeOfType<AbandonMessageFailurePolicy>();
+            state.CanHandle.Should().BeNull();
+        }
+
+        [TestMethod]
+        public void WithFailurePolicy_Test()
+        {
+            //Arrange
+
+            //Act
+            var result = _sut.WithFailurePolicy(new TestFailurePolicy());
+
+            //Assert
+            result.Should().NotBeNull();
+            var state = (result as MessagePumpBuilder)?.GetBuilderState();
+            state.Should().NotBeNull();
+            // ReSharper disable once PossibleNullReferenceException
+            state.FailurePolicyType.Should().BeNull();
+            state.FailurePolicy.Should().BeOfType<TestFailurePolicy>();
             state.CanHandle.Should().BeNull();
         }
 
@@ -111,7 +147,7 @@ namespace MooseSoft.Azure.ServiceBus.Tests.MessagePump
 
             //Assert
             result.Should().NotBeNull();
-            var state = (result as MessagePumpBuilder)?.BuilderState;
+            var state = (result as MessagePumpBuilder)?.GetBuilderState();
             state.Should().NotBeNull();
             // ReSharper disable once PossibleNullReferenceException
             state.BackOffDelayStrategy.Should().BeOfType<ExponentialBackOffDelayStrategy>();
@@ -128,7 +164,7 @@ namespace MooseSoft.Azure.ServiceBus.Tests.MessagePump
 
             //Assert
             result.Should().NotBeNull();
-            var state = (result as MessagePumpBuilder)?.BuilderState;
+            var state = (result as MessagePumpBuilder)?.GetBuilderState();
             state.Should().NotBeNull();
             // ReSharper disable once PossibleNullReferenceException
             state.BackOffDelayStrategy.Should().BeOfType<ExponentialBackOffDelayStrategy>();
@@ -145,7 +181,7 @@ namespace MooseSoft.Azure.ServiceBus.Tests.MessagePump
 
             //Assert
             result.Should().NotBeNull();
-            var state = (result as MessagePumpBuilder)?.BuilderState;
+            var state = (result as MessagePumpBuilder)?.GetBuilderState();
             state.Should().NotBeNull();
             // ReSharper disable once PossibleNullReferenceException
             state.BackOffDelayStrategy.Should().BeOfType<ConstantBackOffDelayStrategy>();
@@ -162,7 +198,7 @@ namespace MooseSoft.Azure.ServiceBus.Tests.MessagePump
 
             //Assert
             result.Should().NotBeNull();
-            var state = (result as MessagePumpBuilder)?.BuilderState;
+            var state = (result as MessagePumpBuilder)?.GetBuilderState();
             state.Should().NotBeNull();
             // ReSharper disable once PossibleNullReferenceException
             state.BackOffDelayStrategy.Should().BeOfType<ConstantBackOffDelayStrategy>();
@@ -179,7 +215,7 @@ namespace MooseSoft.Azure.ServiceBus.Tests.MessagePump
 
             //Assert
             result.Should().NotBeNull();
-            var state = (result as MessagePumpBuilder)?.BuilderState;
+            var state = (result as MessagePumpBuilder)?.GetBuilderState();
             state.Should().NotBeNull();
             // ReSharper disable once PossibleNullReferenceException
             state.BackOffDelayStrategy.Should().BeOfType<LinearBackOffDelayStrategy>();
@@ -196,7 +232,7 @@ namespace MooseSoft.Azure.ServiceBus.Tests.MessagePump
 
             //Assert
             result.Should().NotBeNull();
-            var state = (result as MessagePumpBuilder)?.BuilderState;
+            var state = (result as MessagePumpBuilder)?.GetBuilderState();
             state.Should().NotBeNull();
             // ReSharper disable once PossibleNullReferenceException
             state.BackOffDelayStrategy.Should().BeOfType<LinearBackOffDelayStrategy>();
@@ -213,7 +249,7 @@ namespace MooseSoft.Azure.ServiceBus.Tests.MessagePump
 
             //Assert
             result.Should().NotBeNull();
-            var state = (result as MessagePumpBuilder)?.BuilderState;
+            var state = (result as MessagePumpBuilder)?.GetBuilderState();
             state.Should().NotBeNull();
             // ReSharper disable once PossibleNullReferenceException
             state.BackOffDelayStrategy.Should().BeOfType<ZeroBackOffDelayStrategy>();
@@ -229,7 +265,7 @@ namespace MooseSoft.Azure.ServiceBus.Tests.MessagePump
 
             //Assert
             result.Should().NotBeNull();
-            var state = (result as MessagePumpBuilder)?.BuilderState;
+            var state = (result as MessagePumpBuilder)?.GetBuilderState();
             state.Should().NotBeNull();
             // ReSharper disable once PossibleNullReferenceException
             state.BackOffDelayStrategy.Should().BeOfType<TestBackOffDelayStrategy>();
@@ -239,38 +275,15 @@ namespace MooseSoft.Azure.ServiceBus.Tests.MessagePump
         public void BuildMessagePump_Test()
         {
             //Arrange
-            _sut.BuilderState.MessageProcessor = Substitute.For<IMessageProcessor>();
-            _sut.BuilderState.FailurePolicy = Substitute.For<IFailurePolicy>();
-
-            var options = new MessagePumpBuilderOptions(args => Task.CompletedTask)
-            {
-                MaxAutoRenewDuration = TimeSpan.FromMinutes(50),
-                MaxConcurrentCalls = 10, 
-                ShouldCompleteOnException = exception => false
-            };
+            _sut.GetBuilderState().MessageProcessor = Substitute.For<IMessageProcessor>();
+            _sut.GetBuilderState().FailurePolicy = Substitute.For<IFailurePolicy>();
 
             //Act
-            var result = _sut.BuildMessagePump(options);
+            var result = _sut.Build();
 
             //Assert
             result.Should().NotBeNull();
             result.ReceivedWithAnyArgs()
-                .RegisterMessageHandler(Arg.Any<Func<Message, CancellationToken, Task>>(), Arg.Any<MessageHandlerOptions>());
-        }
-
-        [TestMethod]
-        public void BuildMessagePump_ArgumentNullException_Test()
-        {
-            //Arrange
-            _sut.BuilderState.MessageProcessor = Substitute.For<IMessageProcessor>();
-            _sut.BuilderState.FailurePolicy = Substitute.For<IFailurePolicy>();
-
-            //Act
-            Action act = () => _sut.BuildMessagePump(null);
-
-            //Assert
-            act.Should().ThrowExactly<ArgumentNullException>();
-            _sut.BuilderState.MessageReceiver.DidNotReceiveWithAnyArgs()
                 .RegisterMessageHandler(Arg.Any<Func<Message, CancellationToken, Task>>(), Arg.Any<MessageHandlerOptions>());
         }
 
@@ -278,33 +291,17 @@ namespace MooseSoft.Azure.ServiceBus.Tests.MessagePump
         public void BuildMessagePump_CloneMessageFailurePolicy_Test()
         {
             //Arrange
-            _sut.BuilderState.MessageProcessor = Substitute.For<IMessageProcessor>();
-            _sut.BuilderState.FailurePolicyType = typeof(CloneMessageFailurePolicy);
-            _sut.BuilderState.CanHandle = MessagePumpBuilder.DefaultCanHandle;
+            _sut.GetBuilderState().MessageProcessor = Substitute.For<IMessageProcessor>();
+            _sut.GetBuilderState().FailurePolicyType = typeof(CloneMessageFailurePolicy);
+            _sut.GetBuilderState().CanHandle = MessagePumpBuilder.DefaultCanHandle;
 
             //Act
-            var result = _sut.BuildMessagePump(args => Task.CompletedTask);
+            var result = _sut.Build();
 
             //Assert
             result.Should().NotBeNull();
             result.ReceivedWithAnyArgs()
                 .RegisterMessageHandler(Arg.Any<Func<Message, CancellationToken, Task>>(), Arg.Any<MessageHandlerOptions>());
-        }
-
-        class TestMessageProcessor : IMessageProcessor
-        {
-            public Task ProcessMessageAsync(Message message, CancellationToken cancellationToken)
-            {
-                return Task.CompletedTask;
-            }
-        }
-
-        class TestBackOffDelayStrategy : IBackOffDelayStrategy
-        {
-            public TimeSpan Calculate(int attempts)
-            {
-                return TimeSpan.Zero;
-            }
         }
     }
 }

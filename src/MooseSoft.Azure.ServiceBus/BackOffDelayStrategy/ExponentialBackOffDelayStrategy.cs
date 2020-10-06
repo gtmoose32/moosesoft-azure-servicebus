@@ -1,8 +1,8 @@
-﻿using MooseSoft.Azure.ServiceBus.Abstractions;
+﻿using Moosesoft.Azure.ServiceBus.Abstractions;
 using System;
 using System.Linq;
 
-namespace MooseSoft.Azure.ServiceBus.BackOffDelayStrategy
+namespace Moosesoft.Azure.ServiceBus.BackOffDelayStrategy
 {
     /// <summary>
     /// This strategy performs back off delay calculations using a exponential model.
@@ -15,10 +15,10 @@ namespace MooseSoft.Azure.ServiceBus.BackOffDelayStrategy
 
         private readonly TimeSpan _maxDelay;
 
-        private readonly int _initialBackoffDelaySeconds;
+        private readonly int _initialBackOffDelaySeconds;
 
         /// <summary>
-        /// 
+        /// Initialize a new instance <see cref="ExponentialBackOffDelayStrategy"/>.
         /// </summary>
         /// <param name="maxDelayTime"></param>
         public ExponentialBackOffDelayStrategy(TimeSpan maxDelayTime) : this(maxDelayTime, DefaultInitialDelay)
@@ -27,19 +27,19 @@ namespace MooseSoft.Azure.ServiceBus.BackOffDelayStrategy
         }
 
         /// <summary>
-        /// Creates a new <see cref="ExponentialBackOffDelayStrategy"/> with a specified maxDelayTime and intialDelay
+        /// Initialize a new instance <see cref="ExponentialBackOffDelayStrategy"/>.
         /// </summary>
-        /// <param name="maxDelayTime">The maximum backoff that would be calculated</param>
-        /// <param name="initialDelay">The initial backoff</param>
+        /// <param name="maxDelayTime">The maximum back off that would be calculated</param>
+        /// <param name="initialDelay">The initial back off</param>
         public ExponentialBackOffDelayStrategy(TimeSpan maxDelayTime, TimeSpan initialDelay)
         {
             _maxDelay = maxDelayTime > TimeSpan.Zero ? maxDelayTime : DefaultMaxDelayTime;
-            _initialBackoffDelaySeconds = (int) (initialDelay > TimeSpan.Zero ? initialDelay : DefaultInitialDelay).TotalSeconds;
+            _initialBackOffDelaySeconds = (int) (initialDelay > TimeSpan.Zero ? initialDelay : DefaultInitialDelay).TotalSeconds;
         }
 
         /// <inheritdoc cref="IBackOffDelayStrategy"/>
         public virtual TimeSpan Calculate(int attempts)
-            => new[] { TimeSpan.FromSeconds(_initialBackoffDelaySeconds * Math.Pow(attempts, 2)), _maxDelay }.Min();
+            => new[] { TimeSpan.FromSeconds(_initialBackOffDelaySeconds * Math.Pow(attempts, 2)), _maxDelay }.Min();
 
         /// <summary>
         /// Creates an instance of this back off delay strategy with default settings.

@@ -1,7 +1,7 @@
-﻿using MooseSoft.Azure.ServiceBus.Abstractions;
+﻿using Moosesoft.Azure.ServiceBus.Abstractions;
 using System;
 
-namespace MooseSoft.Azure.ServiceBus.BackOffDelayStrategy
+namespace Moosesoft.Azure.ServiceBus.BackOffDelayStrategy
 {
     /// <summary>
     /// This strategy performs back off delay calculations using a linear model.
@@ -10,6 +10,10 @@ namespace MooseSoft.Azure.ServiceBus.BackOffDelayStrategy
     {
         private readonly TimeSpan _initialDelay;
 
+        /// <summary>
+        /// Initialize a new instance <see cref="LinearBackOffDelayStrategy"/>.
+        /// </summary>
+        /// <param name="initialDelay"></param>
         public LinearBackOffDelayStrategy(TimeSpan initialDelay)
         {
             _initialDelay = initialDelay;

@@ -1,11 +1,11 @@
 ﻿using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
-using MooseSoft.Azure.ServiceBus.Abstractions;
-using MooseSoft.Azure.ServiceBus.MessagePump;
+using Moosesoft.Azure.ServiceBus.Abstractions.Builders;
+using Moosesoft.Azure.ServiceBus.Builders;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace MooseSoft.Azure.ServiceBus
+namespace Moosesoft.Azure.ServiceBus
 {
     /// <summary>
     /// Class that defines extension methods for Azure Service Bus <see cref="IMessageReceiver"/>
@@ -29,7 +29,7 @@ namespace MooseSoft.Azure.ServiceBus
         /// </summary>
         /// <param name="receiver"></param>
         /// <returns></returns>
-        public static IMessageProcessorHolder ConfigureMessagePump(this IMessageReceiver receiver)
+        public static IMessageProcessorHolder<IMessagePumpBuilder> ConfigureMessagePump(this IMessageReceiver receiver)
         {
             return new MessagePumpBuilder(receiver);
         }

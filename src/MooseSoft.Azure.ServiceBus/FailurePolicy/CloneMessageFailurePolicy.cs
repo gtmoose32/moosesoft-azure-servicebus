@@ -1,11 +1,11 @@
 ﻿using Microsoft.Azure.ServiceBus;
-using MooseSoft.Azure.ServiceBus.Abstractions;
+using Moosesoft.Azure.ServiceBus.Abstractions;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace MooseSoft.Azure.ServiceBus.FailurePolicy
+namespace Moosesoft.Azure.ServiceBus.FailurePolicy
 {
     /// <summary>
     /// This failure policy will create a clone of the Service Bus Message attempting to be processed.
@@ -14,14 +14,16 @@ namespace MooseSoft.Azure.ServiceBus.FailurePolicy
     /// </summary>
     public class CloneMessageFailurePolicy : FailurePolicyBase
     {
+        /// <inheritdoc />
         public CloneMessageFailurePolicy(
             Func<Exception, bool> canHandle, 
             IBackOffDelayStrategy backOffDelayStrategy = null, 
             int maxDeliveryCount = 10)
             : base(canHandle, backOffDelayStrategy, maxDeliveryCount)
         {
-        } 
+        }
 
+        /// <inheritdoc />
         public override async Task HandleFailureAsync(MessageContext context, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -61,6 +63,7 @@ namespace MooseSoft.Azure.ServiceBus.FailurePolicy
             }
         }
 
+        /// <inheritdoc />
         protected override int GetDeliveryCount(Message message)
         {
             return base.GetDeliveryCount(message) + message.GetRetryCount(); 

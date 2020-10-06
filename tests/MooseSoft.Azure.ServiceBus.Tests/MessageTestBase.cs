@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Text;
 
-namespace MooseSoft.Azure.ServiceBus.Tests
+namespace Moosesoft.Azure.ServiceBus.Tests
 {
     [ExcludeFromCodeCoverage]
     public abstract class MessageTestBase

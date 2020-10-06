@@ -1,10 +1,10 @@
 ﻿using Microsoft.Azure.ServiceBus.Core;
-using MooseSoft.Azure.ServiceBus.Abstractions;
+using Moosesoft.Azure.ServiceBus.Abstractions;
 using System;
 
-namespace MooseSoft.Azure.ServiceBus.MessagePump
+namespace Moosesoft.Azure.ServiceBus.Builders
 {
-    internal class MessagePumpBuilderState
+    internal class BuilderState
     {
         public IMessageReceiver MessageReceiver { get; set; }
         public IBackOffDelayStrategy BackOffDelayStrategy { get; set; }

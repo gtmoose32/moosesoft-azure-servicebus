@@ -2,7 +2,7 @@
 using System;
 using System.Text;
 
-namespace MooseSoft.Azure.ServiceBus
+namespace Moosesoft.Azure.ServiceBus
 {
     internal static class MessageExtensions
     {

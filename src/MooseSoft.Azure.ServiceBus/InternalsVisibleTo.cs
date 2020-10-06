@@ -1,2 +1,2 @@
 ﻿using System.Runtime.CompilerServices;
-[assembly: InternalsVisibleTo("MooseSoft.Azure.ServiceBus.Tests")]
+[assembly: InternalsVisibleTo("Moosesoft.Azure.ServiceBus.Tests")]

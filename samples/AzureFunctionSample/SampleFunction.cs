@@ -2,42 +2,34 @@ using Microsoft.Azure.ServiceBus;
 using Microsoft.Azure.ServiceBus.Core;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
-using MooseSoft.Azure.ServiceBus;
-using MooseSoft.Azure.ServiceBus.Abstractions;
-using MooseSoft.Azure.ServiceBus.BackOffDelayStrategy;
-using MooseSoft.Azure.ServiceBus.FailurePolicy;
+using Moosesoft.Azure.ServiceBus;
+using Moosesoft.Azure.ServiceBus.Abstractions;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
 namespace AzureFunctionSample
 {
     [ExcludeFromCodeCoverage]
-    public static class SampleFunction
+    public class SampleFunction
     {
-        private static readonly IMessageContextProcessor MessageContextProcessor;
+        private readonly IMessageContextProcessor _messageContextProcessor;
+        private readonly ILogger _logger;
 
-        /// <summary>
-        /// This will create a new MessageContextProcessor with DeferMessageFailurePolicy and default ExponentialBackOffDelayStrategy.
-        /// This is a simple demon.  In a more real world scenario, you might want to consider injecting <see cref="IMessageContextProcessor"/> instead
-        /// for increased testability.  
-        /// </summary>
-        static SampleFunction()
+        public SampleFunction(IMessageContextProcessor messageContextProcessor, ILogger logger)
         {
-            MessageContextProcessor = new MessageContextProcessor(
-                new SampleMessageProcessor(),
-                new CloneMessageFailurePolicy(ex => true, ExponentialBackOffDelayStrategy.Default));
+            _messageContextProcessor = messageContextProcessor;
+            _logger = logger;
         }
 
         [FunctionName("SampleFunction")]
-        public static async Task RunAsync(
+        public async Task ProcessMessageAsync(
             [ServiceBusTrigger("%ServiceBusEntityName%", Connection = "ServiceBusConnectionString")]
             Message message, 
-            MessageReceiver messageReceiver, 
-            ILogger log)
+            MessageReceiver messageReceiver)
         {
-            log.LogInformation($"C# ServiceBus queue trigger function processed message: {message.MessageId}");
+            _logger.LogInformation($"C# ServiceBus queue trigger function processed message: {message.MessageId}");
 
-            await MessageContextProcessor.ProcessMessageContextAsync(new MessageContext(message, messageReceiver))
+            await _messageContextProcessor.ProcessMessageContextAsync(new MessageContext(message, messageReceiver))
                 .ConfigureAwait(false);
         }
     }

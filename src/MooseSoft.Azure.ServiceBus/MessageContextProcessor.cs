@@ -1,24 +1,18 @@
-﻿using MooseSoft.Azure.ServiceBus.Abstractions;
-using MooseSoft.Azure.ServiceBus.FailurePolicy;
+﻿using Microsoft.Azure.ServiceBus;
+using Moosesoft.Azure.ServiceBus.Abstractions;
+using Moosesoft.Azure.ServiceBus.FailurePolicy;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MooseSoft.Azure.ServiceBus
+namespace Moosesoft.Azure.ServiceBus
 {
-    /// <inheritdoc cref="IMessageContextProcessor"/>
-    public class MessageContextProcessor : IMessageContextProcessor
+    internal class MessageContextProcessor : IMessageContextProcessor
     {
-        private readonly IMessageProcessor _messageProcessor;
         private readonly IFailurePolicy _failurePolicy;
+        private readonly IMessageProcessor _messageProcessor;
         private readonly Func<Exception, bool> _shouldComplete;
         
-        /// <summary>
-        /// Creates a new instance of <see cref="MessageContextProcessor"/>
-        /// </summary>
-        /// <param name="messageProcessor">The object that will process the incoming message.</param>
-        /// <param name="failurePolicy">Failure policy that will potentially be applied to any message processing failures.</param>
-        /// <param name="shouldComplete">Function that determines whether the message should be completed on certain exception(s).</param>
         public MessageContextProcessor(
             IMessageProcessor messageProcessor, 
             IFailurePolicy failurePolicy = null, 
@@ -27,7 +21,14 @@ namespace MooseSoft.Azure.ServiceBus
             _messageProcessor = messageProcessor ?? throw new ArgumentNullException(nameof(messageProcessor));
             _failurePolicy = failurePolicy ?? new AbandonMessageFailurePolicy();
             _shouldComplete = shouldComplete;
+        }
 
+        public MessageContextProcessor(
+            Func<Message, CancellationToken, Task> processMessage, 
+            IFailurePolicy failurePolicy = null,
+            Func<Exception, bool> shouldComplete = null)
+            : this(new DefaultMessageProcessor(processMessage), failurePolicy, shouldComplete)
+        {
         }
 
         public async Task ProcessMessageContextAsync(MessageContext context, CancellationToken cancellationToken = default)

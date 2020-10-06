@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace MooseSoft.Azure.ServiceBus.Abstractions
+namespace Moosesoft.Azure.ServiceBus.Abstractions
 {
     /// <summary>
     /// Defines an object that processes a <see cref="MessageContext"/>

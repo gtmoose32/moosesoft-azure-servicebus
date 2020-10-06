@@ -1,4 +1,4 @@
-﻿namespace MooseSoft.Azure.ServiceBus
+﻿namespace Moosesoft.Azure.ServiceBus
 {
     internal class Constants
     {

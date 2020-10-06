@@ -1,10 +1,10 @@
-﻿using MooseSoft.Azure.ServiceBus.Abstractions;
+﻿using Moosesoft.Azure.ServiceBus.Abstractions;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace MooseSoft.Azure.ServiceBus.FailurePolicy
+namespace Moosesoft.Azure.ServiceBus.FailurePolicy
 {
     /// <summary>
     /// This failure policy will defer the original Service Bus Message attempting to be processed.
@@ -13,14 +13,16 @@ namespace MooseSoft.Azure.ServiceBus.FailurePolicy
     /// </summary>
     public class DeferMessageFailurePolicy : FailurePolicyBase
     {
+        /// <inheritdoc />
         public DeferMessageFailurePolicy(
             Func<Exception, bool> canHandle, 
             IBackOffDelayStrategy backOffDelayStrategy = null,
             int maxDeliveryCount = 10) 
             : base(canHandle, backOffDelayStrategy, maxDeliveryCount)
         {
-        } 
+        }
 
+        /// <inheritdoc />
         public override async Task HandleFailureAsync(MessageContext context, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();

@@ -5,7 +5,7 @@ using NSubstitute;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 
-namespace MooseSoft.Azure.ServiceBus.Tests
+namespace Moosesoft.Azure.ServiceBus.Tests
 {
     [ExcludeFromCodeCoverage]
     [TestClass]
