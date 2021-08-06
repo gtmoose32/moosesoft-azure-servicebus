@@ -101,6 +101,13 @@ namespace Moosesoft.Azure.ServiceBus.Abstractions.Builders
                 BuilderState.FailurePolicy ?? CreateFailurePolicy(),
                 shouldCompleteOnException);
 
+        protected IMessageContextProcessor CreateMessageContextProcessor(string name, Func<Exception, bool> shouldCompleteOnException = null) =>
+            new MessageContextProcessor(
+                BuilderState.MessageProcessor,
+                BuilderState.FailurePolicy ?? CreateFailurePolicy(),
+                shouldCompleteOnException, 
+                name);
+
         internal static bool DefaultCanHandle(Exception exception) => true;
 
         internal BuilderState GetBuilderState() => BuilderState;

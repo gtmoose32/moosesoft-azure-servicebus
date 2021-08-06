@@ -12,19 +12,23 @@ namespace Moosesoft.Azure.ServiceBus
         private readonly IFailurePolicy _failurePolicy;
         private readonly IMessageProcessor _messageProcessor;
         private readonly Func<Exception, bool> _shouldComplete;
-        
+
+        public string Name { get; }
+
         public MessageContextProcessor(
-            IMessageProcessor messageProcessor, 
-            IFailurePolicy failurePolicy = null, 
-            Func<Exception, bool> shouldComplete = null)
+            IMessageProcessor messageProcessor,
+            IFailurePolicy failurePolicy = null,
+            Func<Exception, bool> shouldComplete = null,
+            string name = "default")
         {
             _messageProcessor = messageProcessor ?? throw new ArgumentNullException(nameof(messageProcessor));
             _failurePolicy = failurePolicy ?? new AbandonMessageFailurePolicy();
             _shouldComplete = shouldComplete;
+            Name = name;
         }
 
         public MessageContextProcessor(
-            Func<Message, CancellationToken, Task> processMessage, 
+            Func<Message, CancellationToken, Task> processMessage,
             IFailurePolicy failurePolicy = null,
             Func<Exception, bool> shouldComplete = null)
             : this(new DefaultMessageProcessor(processMessage), failurePolicy, shouldComplete)
@@ -46,9 +50,9 @@ namespace Moosesoft.Azure.ServiceBus
             {
                 if (await TryCompleteOnExceptionAsync(context, exception) || await TryAbandonOnExceptionAsync(context, exception))
                     return;
-                
+
                 await _failurePolicy.HandleFailureAsync(context, cancellationToken).ConfigureAwait(false);
-            }           
+            }
         }
 
         private static async Task CheckForDeferredMessageAsync(MessageContext context)
@@ -77,6 +81,5 @@ namespace Moosesoft.Azure.ServiceBus
 
             return true;
         }
-
     }
 }
