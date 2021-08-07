@@ -13,5 +13,7 @@ namespace Moosesoft.Azure.ServiceBus.Abstractions.Builders
         /// <param name="shouldCompleteOn">Optional parameter that allows you to complete certain exceptions without applying failure policies.</param>
         /// <returns><see cref="IMessageContextProcessor"/></returns>
         IMessageContextProcessor Build(Func<Exception, bool> shouldCompleteOn = null);
+
+        IMessageContextProcessor Build(string name, Func<Exception, bool> shouldCompleteOn = null);
     }
 }

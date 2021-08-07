@@ -7,7 +7,8 @@ namespace Moosesoft.Azure.ServiceBus.Builders
 {
     internal class MessageContextProcessorBuilder : BuilderBase<IMessageContextProcessorBuilder>, IMessageContextProcessorBuilder
     {
-        public override IMessageContextProcessorBuilder WithBackOffDelayStrategy<TStrategy>(TStrategy backOffDelayStrategy)
+        public override IMessageContextProcessorBuilder WithBackOffDelayStrategy<TStrategy>(
+            TStrategy backOffDelayStrategy)
         {
             BuilderState.BackOffDelayStrategy = backOffDelayStrategy;
             return this;
@@ -27,5 +28,8 @@ namespace Moosesoft.Azure.ServiceBus.Builders
 
         public IMessageContextProcessor Build(Func<Exception, bool> shouldCompleteOn = null) =>
             CreateMessageContextProcessor(shouldCompleteOn);
+
+        public IMessageContextProcessor Build(string name, Func<Exception, bool> shouldCompleteOn = null) =>
+            CreateMessageContextProcessor(name, shouldCompleteOn);
     }
 }

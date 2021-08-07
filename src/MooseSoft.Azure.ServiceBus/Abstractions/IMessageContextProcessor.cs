@@ -9,6 +9,11 @@ namespace Moosesoft.Azure.ServiceBus.Abstractions
     public interface IMessageContextProcessor
     {
         /// <summary>
+        /// Optional name for the MessageContextProcessor. By default is "default"
+        /// </summary>
+        string Name { get; }
+
+        /// <summary>
         /// Processes the received <see cref="MessageContext"/>
         /// </summary>
         /// <param name="context">Context to be processed.</param>
